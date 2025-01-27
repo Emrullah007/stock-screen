@@ -1,15 +1,17 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8003/api/v1';
+// Get the base URL from environment variables or use a default
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8003/api/v1';
 
+// Create axios instance with base configuration
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-// Add response interceptor for error handling
+// Response interceptor for error handling
 api.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -18,57 +20,34 @@ api.interceptors.response.use(
   }
 );
 
-// Export individual functions for direct import
+// Export individual API functions
 export const getStockInfo = async (symbol) => {
-  try {
-    const response = await api.get(`/stocks/${symbol}`);
-    return response.data;
-  } catch (error) {
-    console.error(`Error fetching stock info for ${symbol}:`, error);
-    throw error;
-  }
+  const response = await api.get(`/stocks/${symbol}`);
+  return response.data;
 };
 
 export const getHistoricalData = async (symbol, period = '1y') => {
-  try {
-    const response = await api.get(`/stocks/${symbol}/historical`, {
-      params: { period },
-    });
-    return response.data;
-  } catch (error) {
-    console.error(`Error fetching historical data for ${symbol}:`, error);
-    throw error;
-  }
+  const response = await api.get(`/stocks/${symbol}/historical/${period}`);
+  return response.data;
 };
 
 export const searchStocks = async (query) => {
-  try {
-    const response = await api.get(`/stocks/search/${query}`);
-    return response.data;
-  } catch (error) {
-    console.error(`Error searching stocks with query ${query}:`, error);
-    throw error;
-  }
+  const response = await api.get(`/stocks/search?query=${query}`);
+  return response.data;
 };
 
-export const getAIRecommendations = async (data) => {
-  try {
-    const response = await api.post('/ai/recommendations', data);
-    return response.data;
-  } catch (error) {
-    console.error('Error getting AI recommendations:', error);
-    throw error;
-  }
+export const getAIRecommendations = async (stocks, riskLevel, investmentHorizon) => {
+  const response = await api.post('/ai/recommendations', {
+    stocks,
+    risk_level: riskLevel,
+    investment_horizon: investmentHorizon,
+  });
+  return response.data;
 };
 
 export const getStockSentiment = async (symbol) => {
-  try {
-    const response = await api.get(`/ai/sentiment/${symbol}`);
-    return response.data;
-  } catch (error) {
-    console.error(`Error getting sentiment analysis for ${symbol}:`, error);
-    throw error;
-  }
+  const response = await api.get(`/ai/sentiment/${symbol}`);
+  return response.data;
 };
 
 export default api; 
