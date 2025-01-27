@@ -73,7 +73,7 @@ class StockService:
     @staticmethod
     def search_stocks(query: str) -> List[Dict[str, Any]]:
         """
-        Search for stocks by symbol or name
+        Search for stocks by symbol
         """
         try:
             # Basic validation
@@ -83,25 +83,28 @@ class StockService:
             # Clean up the query
             query = query.strip().upper()
 
-            try:
-                # Try to get stock info
-                stock = yf.Ticker(query)
-                info = stock.info
+            # Try to get stock info
+            stock = yf.Ticker(query)
+            info = stock.info
 
-                # Verify if we got valid stock info
-                if info and (info.get('regularMarketPrice') is not None or info.get('longName')):
-                    return [{
-                        "symbol": query,
-                        "name": info.get('longName', ''),
-                        "exchange": info.get('exchange', ''),
-                        "price": info.get('regularMarketPrice', 0),
-                        "currency": info.get('currency', 'USD')
-                    }]
-            except Exception as e:
-                print(f"Error searching for stock {query}: {str(e)}")
-                pass
+            # Check if we got valid stock info
+            if not info or 'regularMarketPrice' not in info:
+                return []
 
-            return []
+            return [{
+                "symbol": query,
+                "name": info.get('longName', ''),
+                "exchange": info.get('exchange', ''),
+                "current_price": info.get('regularMarketPrice', 0),
+                "market_cap": info.get('marketCap', 0),
+                "pe_ratio": info.get('forwardPE', 0),
+                "dividend_yield": info.get('dividendYield', 0) * 100 if info.get('dividendYield') else 0,
+                "sector": info.get('sector', ''),
+                "industry": info.get('industry', ''),
+                "fifty_two_week_high": info.get('fiftyTwoWeekHigh', 0),
+                "fifty_two_week_low": info.get('fiftyTwoWeekLow', 0),
+                "currency": info.get('currency', 'USD')
+            }]
         except Exception as e:
             print(f"Error in search_stocks: {str(e)}")
             return [] 
