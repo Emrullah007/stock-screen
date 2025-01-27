@@ -1,5 +1,4 @@
 import React from 'react';
-import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,9 +9,8 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import { Card, CardContent, Typography, Box } from '@mui/material';
-import { useQuery } from '@tanstack/react-query';
-import { stockApi } from '../services/api';
+import { Line } from 'react-chartjs-2';
+import { Box, Paper, Typography } from '@mui/material';
 
 // Register ChartJS components
 ChartJS.register(
@@ -25,76 +23,50 @@ ChartJS.register(
   Legend
 );
 
-const StockChart = ({ symbol, period = '1y' }) => {
-  const { data: historicalData, isLoading } = useQuery({
-    queryKey: ['historicalData', symbol, period],
-    queryFn: () => stockApi.getHistoricalData(symbol, period),
-    enabled: !!symbol,
-  });
+const options = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      position: 'top',
+    },
+    title: {
+      display: true,
+      text: 'Stock Price History',
+    },
+  },
+  scales: {
+    y: {
+      beginAtZero: false,
+    },
+  },
+};
 
-  if (!symbol || isLoading || !historicalData) {
-    return (
-      <Card>
-        <CardContent>
-          <Typography variant="h6" gutterBottom>
-            Historical Price Chart
-          </Typography>
-          <Box sx={{ height: 400, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Typography variant="body1" color="textSecondary">
-              {isLoading ? 'Loading...' : 'Select a stock to view chart'}
-            </Typography>
-          </Box>
-        </CardContent>
-      </Card>
-    );
-  }
+const StockChart = ({ data }) => {
+  if (!data || data.length === 0) return null;
 
   const chartData = {
-    labels: historicalData.map(data => data.date),
+    labels: data.map(item => item.date),
     datasets: [
       {
-        label: 'Close Price',
-        data: historicalData.map(data => data.close),
-        fill: false,
+        label: 'Price',
+        data: data.map(item => item.close),
         borderColor: 'rgb(75, 192, 192)',
+        backgroundColor: 'rgba(75, 192, 192, 0.5)',
         tension: 0.1,
       },
     ],
   };
 
-  const options = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        position: 'top',
-      },
-      title: {
-        display: true,
-        text: `${symbol} Stock Price History`,
-      },
-    },
-    scales: {
-      y: {
-        beginAtZero: false,
-        ticks: {
-          callback: (value) => `$${value.toFixed(2)}`,
-        },
-      },
-    },
-  };
-
   return (
-    <Card>
-      <CardContent>
-        <Typography variant="h6" gutterBottom>
-          Historical Price Chart
-        </Typography>
-        <Box sx={{ height: 400 }}>
-          <Line data={chartData} options={options} />
-        </Box>
-      </CardContent>
-    </Card>
+    <Paper elevation={3} sx={{ p: 3, mb: 4 }}>
+      <Typography variant="h6" gutterBottom>
+        Price History
+      </Typography>
+      <Box sx={{ height: 400 }}>
+        <Line options={options} data={chartData} />
+      </Box>
+    </Paper>
   );
 };
 
