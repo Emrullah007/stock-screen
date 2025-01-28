@@ -7,8 +7,8 @@ A modern web application that provides AI-enhanced stock market analysis, sentim
 - 📈 Real-time stock information and historical data visualization
 - 🤖 AI-powered sentiment analysis of market trends
 - 💡 Intelligent investment recommendations based on risk profile
-- 📊 Interactive stock price charts
-- 🔍 Smart stock search functionality
+- 📊 Interactive stock price charts with historical data
+- 🔍 Smart stock search functionality with error handling
 - 💫 Modern, responsive UI with Material Design
 
 ## Live Demo
@@ -41,18 +41,40 @@ A modern web application that provides AI-enhanced stock market analysis, sentim
 
 ## Installation
 
-### Frontend Setup
+### Backend Setup
+
+#### Python Installation (macOS)
+1. Using Homebrew (recommended):
 ```bash
-cd frontend
-npm install
+# Install Homebrew first if you don't have it
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# Install Python
+brew install python
 ```
 
-### Backend Setup
+2. Verify Python installation:
 ```bash
-cd backend
-python -m venv venv
-source venv/bin/activate  # On Windows: .\venv\Scripts\activate
-pip install -r requirements.txt
+python3 --version
+```
+
+3. Create and activate the virtual environment:
+```bash
+# In the backend directory
+python3 -m venv venv
+source venv/bin/activate
+```
+
+4. Install requirements:
+```bash
+# Make sure you're in the backend directory and venv is activated
+pip3 install -r requirements.txt
+```
+
+### Frontend Setup
+```bash
+# In the frontend directory
+npm install
 ```
 
 ### Environment Configuration
@@ -83,14 +105,13 @@ VITE_API_URL=http://localhost:8003/api/v1
 
 ### Start the Backend Server
 ```bash
-cd backend
-source venv/bin/activate  # On Windows: .\venv\Scripts\activate
+# Make sure you're in the backend directory and venv is activated
 python -m uvicorn app.main:app --reload --port 8003
 ```
 
 ### Start the Frontend Development Server
 ```bash
-cd frontend
+# In the frontend directory
 npm run dev
 ```
 
@@ -142,15 +163,24 @@ stock-screen/
 
 ## API Documentation
 
-Once the backend is running, visit `/docs` for the interactive API documentation.
+Once the backend is running, visit `http://localhost:8003/docs` for the interactive API documentation.
 
-## Contributing
+## Features in Detail
 
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
+### Stock Information
+- Real-time stock data including current price, volume, and market cap
+- Historical price data visualization with interactive charts
+- Company information and key statistics
+
+### AI Analysis
+- Sentiment analysis of market news and trends
+- Investment recommendations based on user risk profile
+- Technical analysis insights
+
+### User Experience
+- Responsive design that works on desktop and mobile
+- Intuitive stock search with error handling
+- Clean and modern Material Design interface
 
 ## Disclaimer
 

@@ -27,20 +27,22 @@ export const getStockInfo = async (symbol) => {
 };
 
 export const getHistoricalData = async (symbol, period = '1y') => {
-  const response = await api.get(`/stocks/${symbol}/historical/${period}`);
+  const response = await api.get(`/stocks/${symbol}/historical`, {
+    params: { period }
+  });
   return response.data;
 };
 
 export const searchStocks = async (query) => {
-  const response = await api.get(`/stocks/search?query=${query}`);
+  const response = await api.get(`/stocks/search/${query}`);
   return response.data;
 };
 
 export const getAIRecommendations = async (stocks, riskLevel, investmentHorizon) => {
   const response = await api.post('/ai/recommendations', {
-    stocks,
+    stocks: stocks,
     risk_level: riskLevel,
-    investment_horizon: investmentHorizon,
+    investment_horizon: investmentHorizon
   });
   return response.data;
 };

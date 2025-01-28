@@ -9,10 +9,10 @@ import {
   Paper,
   InputAdornment,
   CircularProgress,
+  IconButton,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { searchStocks } from '../services/api';
-import { debounce } from 'lodash';
 
 const StockSearch = ({ onSelect }) => {
   const [query, setQuery] = useState('');
@@ -20,8 +20,8 @@ const StockSearch = ({ onSelect }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const handleSearch = debounce(async (searchQuery) => {
-    if (!searchQuery.trim()) {
+  const handleSearch = async () => {
+    if (!query.trim()) {
       setResults([]);
       return;
     }
@@ -30,20 +30,32 @@ const StockSearch = ({ onSelect }) => {
     setError(null);
 
     try {
-      const data = await searchStocks(searchQuery);
-      setResults(data);
+      const data = await searchStocks(query.trim());
+      console.log('Search Response:', data);
+      if (data.length === 0) {
+        setError(`No stock found with symbol "${query.toUpperCase()}". Please check the symbol and try again.`);
+        setResults([]);
+      } else {
+        setResults(data);
+      }
     } catch (err) {
       setError('Error searching stocks');
       console.error('Search error:', err);
+      setResults([]);
     } finally {
       setLoading(false);
     }
-  }, 500);
+  };
 
   const handleInputChange = (event) => {
     const value = event.target.value;
     setQuery(value);
-    handleSearch(value);
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      handleSearch();
+    }
   };
 
   const handleStockSelect = (stock) => {
@@ -58,7 +70,8 @@ const StockSearch = ({ onSelect }) => {
         fullWidth
         value={query}
         onChange={handleInputChange}
-        placeholder="Search stocks..."
+        onKeyPress={handleKeyPress}
+        placeholder="Search stocks (e.g., MSFT, AAPL)..."
         variant="outlined"
         InputProps={{
           startAdornment: (
@@ -66,9 +79,27 @@ const StockSearch = ({ onSelect }) => {
               <SearchIcon />
             </InputAdornment>
           ),
-          endAdornment: loading && (
+          endAdornment: (
             <InputAdornment position="end">
-              <CircularProgress size={20} />
+              {loading ? (
+                <CircularProgress size={20} />
+              ) : (
+                <IconButton 
+                  onClick={handleSearch}
+                  edge="end"
+                  sx={{ 
+                    bgcolor: 'primary.main',
+                    color: 'white',
+                    '&:hover': {
+                      bgcolor: 'primary.dark',
+                    },
+                    width: 35,
+                    height: 35,
+                  }}
+                >
+                  <SearchIcon />
+                </IconButton>
+              )}
             </InputAdornment>
           ),
           sx: {
@@ -109,7 +140,7 @@ const StockSearch = ({ onSelect }) => {
                 <ListItemButton onClick={() => handleStockSelect(stock)}>
                   <ListItemText
                     primary={`${stock.name} (${stock.symbol})`}
-                    secondary={`${stock.exchange} - ${stock.currency} ${stock.price}`}
+                    secondary={`${stock.sector} - ${stock.currency} ${stock.current_price}`}
                   />
                 </ListItemButton>
               </ListItem>

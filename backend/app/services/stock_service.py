@@ -25,17 +25,18 @@ class StockService:
             if dividend_yield:
                 dividend_yield *= 100  # Convert to percentage
 
+            # Format numeric values to 2 decimal places
             return {
                 "name": info.get('longName', ''),
                 "symbol": symbol.upper(),
-                "current_price": current_price,
+                "current_price": round(float(current_price), 2),
                 "market_cap": info.get('marketCap', 0),
-                "pe_ratio": info.get('forwardPE', 0),
-                "dividend_yield": dividend_yield,
+                "pe_ratio": round(float(info.get('forwardPE', 0)), 2),
+                "dividend_yield": round(float(dividend_yield), 2),
                 "sector": info.get('sector', ''),
                 "industry": info.get('industry', ''),
-                "fifty_two_week_high": fifty_two_week_high,
-                "fifty_two_week_low": fifty_two_week_low,
+                "fifty_two_week_high": round(float(fifty_two_week_high), 2),
+                "fifty_two_week_low": round(float(fifty_two_week_low), 2),
                 "currency": info.get('currency', 'USD')
             }
         except Exception as e:
@@ -83,28 +84,30 @@ class StockService:
             # Clean up the query
             query = query.strip().upper()
 
-            # Try to get stock info
-            stock = yf.Ticker(query)
-            info = stock.info
+            try:
+                # Try to get stock info
+                stock = yf.Ticker(query)
+                info = stock.info
+                
+                # For valid stocks, at least one of these price fields should exist
+                price = info.get('currentPrice') or info.get('regularMarketPrice') or info.get('previousClose')
+                
+                # Check if we got valid stock info
+                if not info or not price or not info.get('longName'):
+                    return []
 
-            # Check if we got valid stock info
-            if not info or 'regularMarketPrice' not in info:
+                # Return stock info if valid
+                return [{
+                    "name": info.get('longName', ''),
+                    "symbol": query,
+                    "current_price": round(float(price), 2),
+                    "sector": info.get('sector', 'N/A'),
+                    "currency": info.get('currency', 'USD')
+                }]
+            except Exception as e:
+                print(f"Error getting stock info: {str(e)}")
                 return []
 
-            return [{
-                "symbol": query,
-                "name": info.get('longName', ''),
-                "exchange": info.get('exchange', ''),
-                "current_price": info.get('regularMarketPrice', 0),
-                "market_cap": info.get('marketCap', 0),
-                "pe_ratio": info.get('forwardPE', 0),
-                "dividend_yield": info.get('dividendYield', 0) * 100 if info.get('dividendYield') else 0,
-                "sector": info.get('sector', ''),
-                "industry": info.get('industry', ''),
-                "fifty_two_week_high": info.get('fiftyTwoWeekHigh', 0),
-                "fifty_two_week_low": info.get('fiftyTwoWeekLow', 0),
-                "currency": info.get('currency', 'USD')
-            }]
         except Exception as e:
             print(f"Error in search_stocks: {str(e)}")
             return [] 

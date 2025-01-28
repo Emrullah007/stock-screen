@@ -39,11 +39,11 @@ const AIRecommendations = ({ selectedStocks }) => {
     setError(null);
 
     try {
-      const data = await getAIRecommendations({
-        stocks: selectedStocks,
-        risk_level: riskLevel,
-        investment_horizon: investmentHorizon,
-      });
+      const data = await getAIRecommendations(
+        selectedStocks,
+        riskLevel,
+        investmentHorizon
+      );
       setRecommendations(data);
       // Wait for the component to render before scrolling
       setTimeout(() => {

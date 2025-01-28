@@ -157,7 +157,10 @@ const Home = () => {
             </Grid>
             <Grid item xs={12} md={7} lg={8}>
               <Box>
-                <StockChart data={historicalData} />
+                <StockChart 
+                  data={historicalData} 
+                  stockName={stockInfo?.name}
+                />
                 {showSentiment && sentimentData && (
                   <Box 
                     ref={sentimentRef} 
