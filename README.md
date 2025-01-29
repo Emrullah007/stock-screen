@@ -32,11 +32,16 @@ A modern web application that provides AI-enhanced stock market analysis, sentim
 
 ## Live Demo
 
-- Frontend: [https://stock-screen-psi.vercel.app/](https://stock-screen-psi.vercel.app/)
-- Backend API: [Render App URL]
-- API Documentation: [Render App URL]/docs
+🔗 <a href="https://stock-screen-psi.vercel.app/" target="_blank">Try the application</a>
 
-> **Note:** The backend service is hosted on a free tier, which means it goes to sleep after periods of inactivity. When accessing the application for the first time, or after a period of inactivity, please allow 1-2 minutes for the backend to "wake up" and become responsive. Subsequent requests will be much faster as the backend remains active.
+⚠️ **Important Note About Backend Service**
+```
+The backend service is hosted on a free tier and goes to sleep after periods of inactivity. 
+When accessing the application for the first time or after inactivity:
+• Please allow up to 10 minutes for the backend to "wake up"
+• Initial requests might take longer to respond
+• Subsequent requests will be much faster once the backend is active
+```
 
 ## Tech Stack
 
