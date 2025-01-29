@@ -14,6 +14,22 @@ A modern web application that provides AI-enhanced stock market analysis, sentim
 - 🔍 Smart stock search functionality with error handling
 - 💫 Modern, responsive UI with Material Design
 
+## Application Screenshots
+
+### Stock Search and Analysis
+![Search Results - Microsoft Stock](docs/images/search-results.png)
+*Smart stock search interface showing results for Microsoft (MSFT) with company information*
+
+![Detailed Stock View - Microsoft](docs/images/stock-details.png)
+*Comprehensive stock analysis dashboard showing real-time price, market metrics, and interactive price history chart for Microsoft (MSFT)*
+
+### AI-Powered Features
+![AI Sentiment Analysis - Microsoft](docs/images/sentiment-analysis.png)
+*AI-powered sentiment analysis showing detailed market insights, performance metrics, and technical indicators for Microsoft (MSFT)*
+
+![AI Investment Recommendations](docs/images/ai-recommendations.png)
+*Personalized investment recommendations based on user-defined risk level and investment horizon, providing detailed strategy analysis*
+
 ## Live Demo
 
 - Frontend: [https://stock-screen-psi.vercel.app/](https://stock-screen-psi.vercel.app/)
@@ -201,19 +217,10 @@ Once the backend is running, visit `http://localhost:8003/docs` for the interact
 - Historical price data visualization with interactive charts
 - Company information and key statistics
 
-![Search Results - Microsoft Stock](docs/images/search-results.png)
-*Smart stock search interface showing results for Microsoft (MSFT) with company information*
-
-![Detailed Stock View - Microsoft](docs/images/stock-details.png)
-*Comprehensive stock analysis dashboard showing real-time price, market metrics, and interactive price history chart for Microsoft (MSFT)*
-
 ### AI Analysis
 - Sentiment analysis of market news and trends
 - Investment recommendations based on user risk profile
 - Technical analysis insights
-
-![AI Sentiment Analysis - Microsoft](docs/images/sentiment-analysis.png)
-*AI-powered sentiment analysis showing detailed market insights, performance metrics, and technical indicators for Microsoft (MSFT)*
 
 The AI analysis provides:
 - Overall market sentiment evaluation (Bullish/Bearish)
@@ -221,9 +228,6 @@ The AI analysis provides:
 - Technical analysis including moving averages and RSI
 - Comprehensive market context and trends
 - AI-generated insights based on current market conditions
-
-![AI Investment Recommendations](docs/images/ai-recommendations.png)
-*Personalized investment recommendations based on user-defined risk level and investment horizon, providing detailed strategy analysis*
 
 The AI recommendations feature:
 - Customizable risk level selection (Conservative to Aggressive)
