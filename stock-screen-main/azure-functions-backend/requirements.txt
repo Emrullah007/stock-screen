@@ -1,0 +1,24 @@
+# Do not include azure-functions-worker in this file
+# The Python Worker is managed by the Azure Functions platform
+# Manually managing azure-functions-worker may cause unexpected issues
+
+# Azure Functions
+azure-functions>=1.15.0
+
+# Data Processing
+yfinance==0.2.52
+pandas==2.2.0
+numpy==1.26.4
+
+# AI and ML
+openai==1.60.1
+azure-cognitiveservices-language-textanalytics==0.2.2
+transformers==4.38.2
+
+# HTTP and API
+requests==2.32.3
+aiohttp==3.9.3
+python-dotenv==1.0.1
+
+# News API
+newsapi-python==0.2.7
