@@ -14,29 +14,18 @@ logger = logging.getLogger('azure.functions')
 app = func.FunctionApp()
 
 # Initialize dependencies lazily
-_yfinance = None
 _openai = None
-
-ALPHA_VANTAGE_API_KEY = os.environ.get('ALPHA_VANTAGE_API_KEY', 'NDSKE1UJ0QF4EKTK')
-ALPHA_VANTAGE_BASE_URL = "https://www.alphavantage.co/query"
-
-def get_yfinance():
-    """Initialize yfinance"""
-    global _yfinance
-    if _yfinance is None:
-        _yfinance = yf
-    return _yfinance
 
 def get_openai() -> AzureOpenAI:
     """Initialize Azure OpenAI client"""
-    api_key = os.environ.get('OPENAI_API_KEY')
-    api_base = os.environ.get('OPENAI_API_BASE')
-    api_version = os.environ.get('OPENAI_API_VERSION', '2024-08-01-preview')
+    api_key = os.environ.get('AZURE_API_KEY')
+    api_base = os.environ.get('AZURE_ENDPOINT')
+    model_name = os.environ.get('AZURE_MODEL_NAME', 'gpt-4o')
     
     return AzureOpenAI(
         api_key=api_key,
-        api_version=api_version,
-        azure_endpoint=api_base
+        azure_endpoint=api_base,
+        api_version="2024-08-01-preview"
     )
 
 def get_newsapi():
@@ -48,91 +37,54 @@ def get_newsapi():
     }
 
 def get_stock_data(symbol: str):
-    """Get stock data from Alpha Vantage."""
+    """Get stock data from Yahoo Finance."""
     try:
-        quote_params = {
-            "function": "GLOBAL_QUOTE",
-            "symbol": symbol,
-            "apikey": ALPHA_VANTAGE_API_KEY
-        }
-        quote_response = requests.get(ALPHA_VANTAGE_BASE_URL, params=quote_params)
-        quote_data = quote_response.json()
-
-        if "Global Quote" not in quote_data or not quote_data["Global Quote"]:
+        ticker = yf.Ticker(symbol)
+        info = ticker.info
+        
+        if not info:
             raise Exception("No data found for symbol")
-
-        quote = quote_data["Global Quote"]
-
-        overview_params = {
-            "function": "OVERVIEW",
-            "symbol": symbol,
-            "apikey": ALPHA_VANTAGE_API_KEY
-        }
-        overview_response = requests.get(ALPHA_VANTAGE_BASE_URL, params=overview_params)
-        overview_data = overview_response.json()
 
         return {
             "symbol": symbol.upper(),
-            "name": overview_data.get("Name", ""),
-            "current_price": float(quote.get("05. price", 0)),
-            "change_percent": float(quote.get("10. change percent", "0%").rstrip('%')),
-            "volume": int(quote.get("06. volume", 0)),
-            "market_cap": float(overview_data.get("MarketCapitalization", 0)),
-            "pe_ratio": float(overview_data.get("PERatio", 0)),
-            "dividend_yield": float(overview_data.get("DividendYield", 0)) * 100,
-            "sector": overview_data.get("Sector", ""),
-            "industry": overview_data.get("Industry", ""),
-            "day_high": float(quote.get("03. high", 0)),
-            "day_low": float(quote.get("04. low", 0)),
-            "currency": "USD"
+            "name": info.get("longName", ""),
+            "current_price": round(info.get("currentPrice", 0), 2),
+            "change_percent": round(info.get("regularMarketChangePercent", 0), 2),
+            "volume": info.get("volume", 0),
+            "market_cap": info.get("marketCap", 0),
+            "pe_ratio": round(info.get("trailingPE", 0), 2),
+            "dividend_yield": round(info.get("dividendYield", 0) * 100 if info.get("dividendYield") else 0, 2),
+            "sector": info.get("sector", ""),
+            "industry": info.get("industry", ""),
+            "day_high": round(info.get("dayHigh", 0), 2),
+            "day_low": round(info.get("dayLow", 0), 2),
+            "currency": info.get("currency", "USD")
         }
     except Exception as e:
         logger.error(f"Error fetching stock data: {str(e)}")
         raise
 
 def get_stock_history(symbol: str, period: str = "1mo"):
-    """Get historical stock data from Alpha Vantage."""
+    """Get historical stock data from Yahoo Finance."""
     try:
-        output_size = "compact" if period in ["1mo", "3mo"] else "full"
+        ticker = yf.Ticker(symbol)
+        history = ticker.history(period=period)
         
-        params = {
-            "function": "TIME_SERIES_DAILY",
-            "symbol": symbol,
-            "outputsize": output_size,
-            "apikey": ALPHA_VANTAGE_API_KEY
-        }
-        
-        response = requests.get(ALPHA_VANTAGE_BASE_URL, params=params)
-        data = response.json()
-        
-        if "Time Series (Daily)" not in data:
+        if history.empty:
             raise Exception("No historical data found")
             
-        time_series = data["Time Series (Daily)"]
-        history = []
-        
-        for date, values in time_series.items():
-            history.append({
-                "date": date,
-                "open": float(values["1. open"]),
-                "high": float(values["2. high"]),
-                "low": float(values["3. low"]),
-                "close": float(values["4. close"]),
-                "volume": int(values["5. volume"])
+        result = []
+        for index, row in history.iterrows():
+            result.append({
+                "date": index.strftime("%Y-%m-%d"),
+                "open": round(float(row["Open"]), 2),
+                "high": round(float(row["High"]), 2),
+                "low": round(float(row["Low"]), 2),
+                "close": round(float(row["Close"]), 2),
+                "volume": int(row["Volume"])
             })
-        
-        history.sort(key=lambda x: x["date"])
-        
-        if period == "1mo":
-            history = history[-30:]
-        elif period == "3mo":
-            history = history[-90:]
-        elif period == "6mo":
-            history = history[-180:]
-        elif period == "1y":
-            history = history[-365:]
             
-        return history
+        return result
     except Exception as e:
         logger.error(f"Error fetching stock history: {str(e)}")
         raise
@@ -159,12 +111,9 @@ def GetStockData(req: func.HttpRequest) -> func.HttpResponse:
         error_msg = str(e)
         status_code = 500
         
-        if "Invalid API call" in error_msg:
+        if "No data found for symbol" in error_msg:
             status_code = 400
             error_msg = "Invalid stock symbol"
-        elif "Thank you for using Alpha Vantage" in error_msg:
-            status_code = 429
-            error_msg = "API call frequency limit reached. Please try again later."
         
         return func.HttpResponse(
             json.dumps({
@@ -198,12 +147,9 @@ def GetStockHistory(req: func.HttpRequest) -> func.HttpResponse:
         error_msg = str(e)
         status_code = 500
         
-        if "Invalid API call" in error_msg:
+        if "No historical data found" in error_msg:
             status_code = 400
-            error_msg = "Invalid stock symbol"
-        elif "Thank you for using Alpha Vantage" in error_msg:
-            status_code = 429
-            error_msg = "API call frequency limit reached. Please try again later."
+            error_msg = "Invalid stock symbol or no historical data available"
         
         return func.HttpResponse(
             json.dumps({
