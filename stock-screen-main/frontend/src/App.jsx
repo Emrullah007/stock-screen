@@ -1,57 +1,83 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
+import React from 'react';
+import { ThemeProvider, createTheme, CssBaseline } from '@mui/material';
 import Home from './pages/Home';
 
-// Create a client
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      retry: 1,
-      staleTime: 5000,
-    },
-  },
-});
-
-// Create a theme
 const theme = createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: '#1976d2',
+      main: '#2196F3',
+      light: '#64B5F6',
+      dark: '#1976D2',
+      contrastText: '#fff',
     },
     secondary: {
-      main: '#dc004e',
+      main: '#1976D2',
+      light: '#42A5F5',
+      dark: '#1565C0',
+      contrastText: '#fff',
+    },
+    background: {
+      default: '#F5F7FA',
+      paper: '#ffffff',
+    },
+    text: {
+      primary: '#2C3E50',
+      secondary: '#5E6E7D',
+    },
+  },
+  typography: {
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    h4: { fontWeight: 600, color: '#2C3E50' },
+    h5: { fontWeight: 500, color: '#2C3E50' },
+    h6: { fontWeight: 500, color: '#2C3E50' },
+    subtitle1: { color: '#5E6E7D' },
+    body1: { color: '#2C3E50' },
+    body2: { color: '#5E6E7D' },
+  },
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          backgroundColor: '#F5F7FA',
+          minHeight: '100vh',
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: 'none',
+          borderRadius: '8px',
+          fontWeight: 500,
+          boxShadow: 'none',
+          '&:hover': {
+            boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+          },
+        },
+      },
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          borderRadius: '12px',
+          boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
+        },
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: { borderRadius: '12px' },
+      },
     },
   },
 });
 
-// Create router configuration
-const router = createBrowserRouter(
-  [
-    {
-      path: '/',
-      element: (
-        <QueryClientProvider client={queryClient}>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <Home />
-          </ThemeProvider>
-        </QueryClientProvider>
-      ),
-    },
-  ],
-  {
-    future: {
-      v7_startTransition: true,
-      v7_relativeSplatPath: true,
-    },
-  }
+const App = () => (
+  <ThemeProvider theme={theme}>
+    <CssBaseline />
+    <Home />
+  </ThemeProvider>
 );
-
-function App() {
-  return <RouterProvider router={router} />;
-}
 
 export default App;

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   Card,
   CardContent,
@@ -10,28 +10,30 @@ import {
   Select,
   MenuItem,
   Paper,
+  Alert,
 } from '@mui/material';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import ReactMarkdown from 'react-markdown';
 import { getAIRecommendations } from '../services/api';
 import LoadingModal from './LoadingModal';
 
-const AIRecommendations = ({ selectedStocks }) => {
+const AIRecommendations = ({ symbol, sentimentData, onGenerateSentiment }) => {
   const [riskLevel, setRiskLevel] = useState('moderate');
   const [investmentHorizon, setInvestmentHorizon] = useState('medium-term');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [recommendations, setRecommendations] = useState(null);
-  const recommendationsRef = useRef(null);
-
-  // Clear recommendations when selected stocks change
-  useEffect(() => {
-    setRecommendations(null);
-    setError(null);
-  }, [selectedStocks]);
+  const [recommendation, setRecommendation] = useState(null);
+  const recommendationRef = useRef(null);
 
   const handleGetRecommendations = async () => {
-    if (!selectedStocks || selectedStocks.length === 0) {
-      setError('Please select at least one stock first');
+    if (!symbol) {
+      setError('Please select a stock first');
+      return;
+    }
+
+    if (!sentimentData) {
+      setError('Please generate sentiment analysis first');
       return;
     }
 
@@ -39,16 +41,12 @@ const AIRecommendations = ({ selectedStocks }) => {
     setError(null);
 
     try {
-      const data = await getAIRecommendations(
-        selectedStocks,
-        riskLevel,
-        investmentHorizon
-      );
-      setRecommendations(data);
-      // Wait for the component to render before scrolling
+      const data = await getAIRecommendations(symbol, riskLevel, investmentHorizon, sentimentData);
+      setRecommendation(data);
+      // Scroll to recommendation
       setTimeout(() => {
-        if (recommendationsRef.current) {
-          recommendationsRef.current.scrollIntoView({ 
+        if (recommendationRef.current) {
+          recommendationRef.current.scrollIntoView({ 
             behavior: 'smooth',
             block: 'start'
           });
@@ -61,6 +59,38 @@ const AIRecommendations = ({ selectedStocks }) => {
       setLoading(false);
     }
   };
+
+  if (!sentimentData) {
+    return (
+      <Card elevation={3}>
+        <CardContent>
+          <Typography variant="h6" gutterBottom sx={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: 1,
+            fontSize: '1.1rem',
+            fontWeight: 500,
+            color: 'primary.main'
+          }}>
+            <AutoAwesomeIcon sx={{ fontSize: '1.2rem' }} />
+            AI Investment Recommendations
+          </Typography>
+          
+          <Alert 
+            severity="info" 
+            sx={{ 
+              mt: 2,
+              '& .MuiAlert-message': {
+                width: '100%'
+              }
+            }}
+          >
+            Please generate an AI News Sentiment Analysis first to receive personalized investment recommendations.
+          </Alert>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card elevation={3}>
@@ -108,7 +138,7 @@ const AIRecommendations = ({ selectedStocks }) => {
             variant="contained"
             fullWidth
             onClick={handleGetRecommendations}
-            disabled={loading || !selectedStocks || selectedStocks.length === 0}
+            disabled={loading || !symbol}
             sx={{ 
               height: '44px',
               borderRadius: '22px',
@@ -137,29 +167,137 @@ const AIRecommendations = ({ selectedStocks }) => {
           </Typography>
         )}
 
-        {recommendations && (
+        {recommendation && (
           <Paper 
-            ref={recommendationsRef}
+            ref={recommendationRef}
             elevation={0} 
             sx={{ 
               p: 3, 
               bgcolor: 'background.default',
-              fontFamily: 'monospace',
               whiteSpace: 'pre-wrap',
               fontSize: '0.9rem',
-              lineHeight: 1.6,
+              lineHeight: 1.5,
               mt: 2,
               '& h1, & h2, & h3': {
-                fontFamily: 'inherit',
                 fontWeight: 600,
-                my: 2
+                color: '#2C3E50',
+                fontSize: '1rem',
+                '&:first-of-type': {
+                  mt: 0
+                },
+                mt: 0.5,
+                mb: 0.25
+              },
+              '& h3': {
+                display: 'flex',
+                alignItems: 'center',
+                gap: 0.5
               },
               '& p': {
-                mb: 2
+                my: 0
+              },
+              '& ul, & ol': {
+                mt: 0,
+                mb: 0,
+                pl: 2
+              },
+              '& li': {
+                mb: 0,
+                pl: 0.5,
+                lineHeight: 1.4,
+                '& + li': {
+                  mt: 0.1
+                }
+              },
+              '& li > p': {
+                my: 0,
+                display: 'inline'
+              },
+              '& strong': {
+                color: '#2196F3',
+                fontWeight: 600
+              },
+              '& hr': {
+                my: 0.25,
+                border: 'none',
+                borderTop: '1px solid rgba(0, 0, 0, 0.1)'
               }
             }}
           >
-            {recommendations.analysis}
+            <ReactMarkdown components={{
+              p: ({ node, children }) => (
+                <Typography component="div" sx={{ mb: 1 }}>
+                  {children}
+                </Typography>
+              ),
+              h3: ({ node, children }) => (
+                <Typography variant="h6" sx={{ 
+                  mt: 2, 
+                  mb: 1,
+                  fontSize: '1rem',
+                  fontWeight: 600,
+                  color: 'primary.main',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1
+                }}>
+                  {children}
+                </Typography>
+              )
+            }}>
+              {recommendation.recommendation}
+            </ReactMarkdown>
+            <Box sx={{ 
+              mt: 3, 
+              pt: 2, 
+              borderTop: '1px solid rgba(0, 0, 0, 0.1)',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 1
+            }}>
+              <Typography sx={{ color: 'text.secondary', fontSize: '0.875rem', mb: 0.5, fontWeight: 600 }}>
+                Analysis based on:
+              </Typography>
+              <Box sx={{ display: 'flex', gap: 1, ml: 2 }}>
+                <Typography sx={{ color: 'text.secondary', fontSize: '0.875rem', minWidth: '130px' }}>
+                  Risk Level:
+                </Typography>
+                <Typography 
+                  sx={{ 
+                    color: '#2196F3',
+                    fontSize: '0.875rem',
+                    fontWeight: 500
+                  }}
+                >
+                  {riskLevel.charAt(0).toUpperCase() + riskLevel.slice(1)}
+                </Typography>
+              </Box>
+              <Box sx={{ display: 'flex', gap: 1, ml: 2 }}>
+                <Typography sx={{ color: 'text.secondary', fontSize: '0.875rem', minWidth: '130px' }}>
+                  Investment Horizon:
+                </Typography>
+                <Typography 
+                  sx={{ 
+                    color: '#2196F3',
+                    fontSize: '0.875rem',
+                    fontWeight: 500
+                  }}
+                >
+                  {investmentHorizon.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                </Typography>
+              </Box>
+              <Typography 
+                sx={{ 
+                  color: 'text.secondary',
+                  fontSize: '0.75rem',
+                  mt: 1,
+                  textAlign: 'right',
+                  ml: 2
+                }}
+              >
+                Last Updated: {new Date(recommendation.analysis_timestamp).toLocaleString()}
+              </Typography>
+            </Box>
           </Paper>
         )}
       </CardContent>
