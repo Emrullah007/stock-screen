@@ -106,23 +106,33 @@ CORS_ORIGINS=http://localhost:5173,http://localhost:3000
 
 ```
 .
-├── frontend/                 # React + Vite frontend application
+├── frontend/                      # React + Vite frontend application
 │   ├── src/
-│   │   ├── components/      # Reusable UI components
-│   │   ├── pages/          # Page components
-│   │   ├── services/       # API services
-│   │   └── utils/          # Utility functions
-│   ├── public/             # Static assets
-│   └── package.json        # Frontend dependencies
+│   │   ├── components/           # Reusable UI components
+│   │   ├── pages/               # Page components
+│   │   ├── services/            # API services
+│   │   └── utils/               # Utility functions
+│   ├── public/                  # Static assets
+│   ├── .env.example             # Environment variables template
+│   ├── package.json             # Frontend dependencies
+│   ├── vite.config.js           # Vite configuration
+│   ├── vercel.json              # Vercel deployment config
+│   └── eslint.config.js         # ESLint configuration
 │
-├── azure-functions-backend/ # Azure Functions backend
-│   ├── function_app.py     # Main application file
-│   ├── requirements.txt    # Python dependencies
-│   └── .env.example        # Environment variables template
+├── azure-functions-backend/      # Azure Functions backend
+│   ├── function_app.py          # Main application file with API endpoints
+│   ├── requirements.txt         # Python dependencies
+│   ├── .env.example            # Environment variables template
+│   ├── host.json               # Azure Functions host configuration
+│   └── local.settings.json     # Local development settings
 │
-├── README.md               # Project documentation
-├── LICENSE                 # MIT license with terms
-└── .gitignore             # Git ignore rules
+├── docs/                        # Documentation
+│   └── images/                 # Application screenshots and images
+│
+├── README.md                    # Project documentation
+├── LICENSE                      # MIT license with terms
+├── .env.example                # Root environment template
+└── .gitignore                  # Git ignore rules
 ```
 
 ## 🔄 Development Workflow
@@ -148,16 +158,6 @@ CORS_ORIGINS=http://localhost:5173,http://localhost:3000
    npm run dev
    ```
    Frontend will be available at http://localhost:5173
-
-3. **Testing**
-   ```bash
-   # Frontend tests
-   cd frontend
-   npm run test
-
-   # Frontend test coverage
-   npm run coverage
-   ```
 
 ## 📱 Features in Detail
 
@@ -191,7 +191,7 @@ CORS_ORIGINS=http://localhost:5173,http://localhost:3000
 ## 🚀 Deployment
 
 ### Frontend (Vercel)
-1. Connect your GitHub repository
+1. Create a new project in Vercel
 2. Configure build settings:
    ```
    Build Command: npm run build
@@ -199,16 +199,22 @@ CORS_ORIGINS=http://localhost:5173,http://localhost:3000
    Framework Preset: Vite
    ```
 3. Add environment variables from `.env.example`
+4. Deploy your frontend code
 
 ### Backend (Azure Functions)
-1. Create Azure Function App
+1. Create Azure Function App in your Azure portal
 2. Configure deployment:
    ```
    Runtime stack: Python
    Version: 3.8
    ```
 3. Set up environment variables from `.env.example`
-4. Enable CORS for frontend domain
+4. Deploy your function code using Azure Functions Core Tools:
+   ```bash
+   cd azure-functions-backend
+   func azure functionapp publish YOUR_FUNCTION_APP_NAME
+   ```
+5. Enable CORS for your frontend domain
 
 ## 🔒 Security Considerations
 
