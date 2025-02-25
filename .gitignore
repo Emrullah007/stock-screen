@@ -127,4 +127,4 @@ dist-ssr/
 *.local
 .env*.local
 *.pem
-lerna-debug.log* 
+lerna-debug.log* .DS_Store

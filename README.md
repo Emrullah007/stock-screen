@@ -3,7 +3,7 @@
 A sophisticated web application leveraging AI to provide comprehensive stock market analysis, sentiment evaluation, and personalized investment recommendations.
 
 ![Main View - Stock Analysis Dashboard](docs/images/main-view.png)
-*AI-powered stock analysis dashboard with real-time market data and intelligent insights*
+*AI-powered stock analysis dashboard showcasing real-time market data, sentiment analysis, and intelligent investment recommendations*
 
 ## 🌟 Key Features
 
@@ -11,6 +11,8 @@ A sophisticated web application leveraging AI to provide comprehensive stock mar
 - Live stock data with price, volume, and market metrics
 - Interactive price charts with historical data visualization
 - Company information and key financial statistics
+- Technical indicators and market trends
+- Comprehensive financial metrics display
 
 ### AI-Powered Intelligence
 - **Sentiment Analysis Agent**
@@ -18,18 +20,21 @@ A sophisticated web application leveraging AI to provide comprehensive stock mar
   - Analyzes technical indicators and trends
   - Evaluates market sentiment and positioning
   - Identifies key opportunities and risks
+  - Provides comprehensive market context
 
 - **Investment Recommendation Agent**
   - Generates personalized investment strategies
   - Adapts to user's risk tolerance
   - Provides actionable entry/exit points
   - Monitors market conditions
+  - Risk-adjusted portfolio suggestions
 
 ### Modern User Experience
 - Intuitive stock search with detailed results
 - Responsive Material Design interface
 - Real-time data updates
 - Interactive charts and visualizations
+- Seamless user interactions
 
 ## 🚀 Quick Start
 
@@ -185,52 +190,45 @@ CORS_ORIGINS=http://localhost:5173,http://localhost:3000
 ## 📱 Features in Detail
 
 ### Stock Information
-- Real-time price updates
-- Historical price charts
-- Technical indicators
-- Company fundamentals
-- Market statistics
+- Real-time price updates with dynamic refresh
+- Interactive historical price charts with multiple timeframes
+- Comprehensive technical indicators and analysis
+- Detailed company fundamentals and metrics
+- Advanced market statistics and trends
+- Key financial ratios and performance indicators
 
-![Stock Details View](docs/images/stock-details.png)
-*Detailed stock information with real-time price updates, market metrics, and technical indicators*
-
-### Stock Search
-- Intuitive search interface
-- Real-time stock lookup
-- Detailed search results with key metrics
-- Quick access to company information
-
-![Search Results](docs/images/search-results.png)
-*Smart search functionality with comprehensive stock information in results*
+### Stock Search & Discovery
+- Smart search functionality with real-time suggestions
+- Detailed company information in search results
+- Quick access to key financial metrics
+- Efficient stock symbol lookup
+- Comprehensive market data preview
 
 ### AI Analysis System
 1. **Sentiment Analysis Agent**
-   - Market news processing
-   - Technical indicator analysis
-   - Sentiment evaluation
-   - Risk assessment
-
-![Sentiment Analysis](docs/images/sentiment-analysis.png)
-*AI-powered sentiment analysis with technical indicators, market metrics, and news evaluation*
+   - Real-time market news processing and analysis
+   - Technical indicator pattern recognition
+   - Market sentiment evaluation and scoring
+   - Risk factor identification and assessment
+   - News impact analysis and correlation
+   - Trend identification and projection
 
 2. **Investment Recommendation Agent**
-   - Strategy generation
-   - Risk-adjusted recommendations
-   - Entry/exit point suggestions
-   - Portfolio considerations
-
-![AI Recommendations](docs/images/ai-recommendations.png)
-*Personalized investment recommendations based on risk tolerance and investment horizon*
+   - Personalized strategy generation
+   - Risk tolerance-based recommendations
+   - Dynamic entry/exit point suggestions
+   - Portfolio optimization guidance
+   - Market condition monitoring
+   - Risk-adjusted return analysis
 
 ### User Interface
-- Modern Material Design
-- Responsive layout
-- Interactive charts
-- Real-time updates
-- Intuitive navigation
-
-![Main Dashboard](docs/images/main-view.png)
-*Clean, modern interface with real-time data and AI-powered insights*
+- Clean, modern Material Design implementation
+- Responsive layout for all device sizes
+- Interactive data visualization
+- Real-time updates and notifications
+- Intuitive navigation and controls
+- Seamless user experience
+- Accessible design patterns
 
 ## 🚀 Deployment
 
