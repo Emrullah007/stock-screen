@@ -130,8 +130,13 @@ stock-screen/
    func start
    ```
    Backend will be available at:
-   - API: http://localhost:7071/api
-   - Swagger UI: http://localhost:7071/api/docs
+   - API Endpoint: http://localhost:7071/api
+   - Available Functions:
+     - `/GetStockData`: Get real-time stock information
+     - `/GetStockHistory`: Get historical price data
+     - `/GetSentimentAnalysis`: Get AI-powered sentiment analysis
+     - `/GetInvestmentRecommendation`: Get personalized investment recommendations
+     - `/SearchStocks`: Search for stocks by symbol
 
 2. **Start Frontend Development Server**
    ```bash
