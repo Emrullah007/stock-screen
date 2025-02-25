@@ -222,42 +222,77 @@ stock-screen/
 4. Push to the branch
 5. Create a Pull Request
 
-## 📝 License
+## 📝 License & Legal Information
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+### Project Code License
+The original code in this project is available under the MIT License. However, please note that this only applies to our original code contributions.
 
-### Third-Party Licenses
+### Important License Considerations
 
-This project uses several third-party libraries and services, each with their own licenses:
+This project incorporates various components with different licensing requirements:
 
-#### Frontend Dependencies
-- **React** - [MIT License](https://github.com/facebook/react/blob/main/LICENSE)
-- **Material-UI** - [MIT License](https://github.com/mui/material-ui/blob/master/LICENSE)
-- **Chart.js** - [MIT License](https://github.com/chartjs/Chart.js/blob/master/LICENSE.md)
-- **Vite** - [MIT License](https://github.com/vitejs/vite/blob/main/LICENSE)
-- **React Router** - [MIT License](https://github.com/remix-run/react-router/blob/main/LICENSE)
-- **Axios** - [MIT License](https://github.com/axios/axios/blob/master/LICENSE)
+#### Commercial API Services
+- **Azure OpenAI Service**
+  - Requires a paid subscription
+  - Subject to Microsoft's commercial terms and conditions
+  - Usage restrictions apply to AI-generated content
 
-#### Backend Dependencies
-- **Python** - [PSF License](https://docs.python.org/3/license.html)
-- **Azure Functions** - [MIT License](https://github.com/Azure/azure-functions-python-worker/blob/dev/LICENSE)
-- **yfinance** - [Apache License 2.0](https://github.com/ranaroussi/yfinance/blob/main/LICENSE.txt)
-- **pandas** - [BSD 3-Clause License](https://github.com/pandas-dev/pandas/blob/main/LICENSE)
-- **numpy** - [BSD 3-Clause License](https://github.com/numpy/numpy/blob/main/LICENSE.txt)
+- **NewsAPI**
+  - Requires a paid API key
+  - Subject to NewsAPI's terms of service
+  - Usage limitations based on subscription tier
 
-#### API Services
-- **Azure OpenAI** - Commercial License (Requires API key)
-- **NewsAPI** - Commercial License (Requires API key)
+- **Yahoo Finance Data (via yfinance)**
+  - Data provided by Yahoo Finance is subject to Yahoo's terms of service
+  - yfinance is licensed under Apache 2.0
+  - Commercial usage may require direct agreement with Yahoo
 
-### Usage Restrictions
+#### Open Source Dependencies
+Our project uses various open-source packages, each with their own licenses:
 
-When using this project, please be aware of the following:
-1. The MIT License of this project applies to our original code
-2. Third-party components are subject to their respective licenses
-3. API services (Azure OpenAI, NewsAPI) require separate commercial agreements
-4. Some dependencies may have usage restrictions or attribution requirements
+##### Frontend (MIT Licensed)
+- React
+- Material-UI
+- Chart.js
+- Vite
+- React Router
+- Axios
 
-For commercial use, ensure compliance with all third-party licenses and API terms of service.
+##### Backend
+- Python (PSF License)
+- Azure Functions (MIT)
+- pandas (BSD 3-Clause)
+- numpy (BSD 3-Clause)
+
+### Legal Disclaimer
+
+1. **Data Usage**: 
+   - Financial data provided through this application comes from third-party sources
+   - Users must comply with respective data providers' terms of service
+   - Commercial use may require separate agreements with data providers
+
+2. **API Services**:
+   - Users must obtain their own API keys
+   - Comply with all API service providers' terms and conditions
+   - Monitor and adhere to usage limits and restrictions
+
+3. **Open Source Components**:
+   - Attribution requirements must be maintained
+   - Some components may have additional restrictions
+   - Modifications to open-source components must comply with their respective licenses
+
+### Commercial Use Notice
+
+For commercial use of this application, you must:
+1. Obtain appropriate licenses for all API services
+2. Ensure compliance with data providers' terms of service
+3. Review and comply with all third-party component licenses
+4. Consider obtaining legal advice for commercial deployment
+
+For detailed terms of service and licensing information, please refer to each service provider's documentation:
+- [Azure OpenAI Service Terms](https://azure.microsoft.com/en-us/support/legal/)
+- [NewsAPI Terms](https://newsapi.org/terms)
+- [Yahoo Finance Terms](https://legal.yahoo.com/us/en/yahoo/terms/otos/index.html)
 
 ## 🙏 Acknowledgments
 

@@ -2,6 +2,18 @@ MIT License
 
 Copyright (c) 2024 AI-Powered Stock Market Analysis
 
+This license applies ONLY to the original code contributions in this project, specifically:
+- Custom React components
+- Frontend application structure
+- Backend Azure Functions implementation
+- Integration code between services
+
+This license does NOT apply to:
+- Third-party libraries and their dependencies
+- API services (Azure OpenAI, NewsAPI)
+- Financial data provided by data sources
+- Any other third-party content or services
+
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
@@ -18,4 +30,8 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE. 
+SOFTWARE.
+
+Note: This project incorporates various third-party components and services, 
+each with their own licenses and terms of service. Users must comply with all 
+applicable licenses and terms of service for these components and services. 
