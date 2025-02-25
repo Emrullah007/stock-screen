@@ -174,59 +174,43 @@ const AIRecommendations = ({ symbol, sentimentData, onGenerateSentiment }) => {
             sx={{ 
               p: 3, 
               bgcolor: 'background.default',
-              whiteSpace: 'pre-wrap',
-              fontSize: '0.9rem',
-              lineHeight: 1.5,
-              mt: 2,
               '& h1, & h2, & h3': {
                 fontWeight: 600,
-                color: '#2C3E50',
-                fontSize: '1rem',
-                '&:first-of-type': {
-                  mt: 0
-                },
-                mt: 0.5,
-                mb: 0.25
-              },
-              '& h3': {
-                display: 'flex',
-                alignItems: 'center',
-                gap: 0.5
+                my: 2,
+                color: 'primary.main',
+                fontSize: '1.1rem'
               },
               '& p': {
-                my: 0
+                mb: 2,
+                color: 'text.primary'
               },
               '& ul, & ol': {
                 mt: 0,
-                mb: 0,
+                mb: 2,
                 pl: 2
               },
               '& li': {
-                mb: 0,
-                pl: 0.5,
-                lineHeight: 1.4,
-                '& + li': {
-                  mt: 0.1
-                }
-              },
-              '& li > p': {
-                my: 0,
-                display: 'inline'
+                mb: 1,
+                color: 'text.primary'
               },
               '& strong': {
-                color: '#2196F3',
+                color: 'primary.main',
                 fontWeight: 600
-              },
-              '& hr': {
-                my: 0.25,
-                border: 'none',
-                borderTop: '1px solid rgba(0, 0, 0, 0.1)'
               }
             }}
           >
             <ReactMarkdown components={{
               p: ({ node, children }) => (
-                <Typography component="div" sx={{ mb: 1 }}>
+                <Typography 
+                  component="div" 
+                  sx={{ 
+                    mb: 2,
+                    '& p': {
+                      margin: 0,
+                      padding: 0
+                    }
+                  }}
+                >
                   {children}
                 </Typography>
               ),
@@ -255,46 +239,53 @@ const AIRecommendations = ({ symbol, sentimentData, onGenerateSentiment }) => {
               flexDirection: 'column',
               gap: 1
             }}>
-              <Typography sx={{ color: 'text.secondary', fontSize: '0.875rem', mb: 0.5, fontWeight: 600 }}>
+              <Typography sx={{ 
+                color: 'text.secondary', 
+                fontSize: '0.875rem', 
+                mb: 0.5, 
+                fontWeight: 600 
+              }}>
                 Analysis based on:
               </Typography>
               <Box sx={{ display: 'flex', gap: 1, ml: 2 }}>
-                <Typography sx={{ color: 'text.secondary', fontSize: '0.875rem', minWidth: '130px' }}>
+                <Typography sx={{ 
+                  color: 'text.secondary', 
+                  fontSize: '0.875rem', 
+                  minWidth: '130px' 
+                }}>
                   Risk Level:
                 </Typography>
-                <Typography 
-                  sx={{ 
-                    color: '#2196F3',
-                    fontSize: '0.875rem',
-                    fontWeight: 500
-                  }}
-                >
+                <Typography sx={{ 
+                  color: 'primary.main',
+                  fontSize: '0.875rem',
+                  fontWeight: 500
+                }}>
                   {riskLevel.charAt(0).toUpperCase() + riskLevel.slice(1)}
                 </Typography>
               </Box>
               <Box sx={{ display: 'flex', gap: 1, ml: 2 }}>
-                <Typography sx={{ color: 'text.secondary', fontSize: '0.875rem', minWidth: '130px' }}>
+                <Typography sx={{ 
+                  color: 'text.secondary', 
+                  fontSize: '0.875rem', 
+                  minWidth: '130px' 
+                }}>
                   Investment Horizon:
                 </Typography>
-                <Typography 
-                  sx={{ 
-                    color: '#2196F3',
-                    fontSize: '0.875rem',
-                    fontWeight: 500
-                  }}
-                >
+                <Typography sx={{ 
+                  color: 'primary.main',
+                  fontSize: '0.875rem',
+                  fontWeight: 500
+                }}>
                   {investmentHorizon.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
                 </Typography>
               </Box>
-              <Typography 
-                sx={{ 
-                  color: 'text.secondary',
-                  fontSize: '0.75rem',
-                  mt: 1,
-                  textAlign: 'right',
-                  ml: 2
-                }}
-              >
+              <Typography sx={{ 
+                color: 'text.secondary',
+                fontSize: '0.75rem',
+                mt: 1,
+                textAlign: 'right',
+                ml: 2
+              }}>
                 Last Updated: {new Date(recommendation.analysis_timestamp).toLocaleString()}
               </Typography>
             </Box>

@@ -174,9 +174,6 @@ const SentimentAnalysis = ({ data, onClose }) => {
           <Typography variant="h5" component="h2" gutterBottom>
             Market Analysis: {data.company_name} ({data.symbol})
           </Typography>
-          <IconButton onClick={onClose} size="small" sx={{ mt: -1, mr: -1 }}>
-            <CloseIcon />
-          </IconButton>
         </Box>
 
         {/* Market Metrics */}

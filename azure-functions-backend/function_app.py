@@ -403,7 +403,7 @@ Please provide a comprehensive analysis considering:
                 {"role": "user", "content": context}
             ],
             temperature=0.7,
-            max_tokens=1000
+            max_tokens=2500
         )
         
         sentiment_analysis = response.choices[0].message.content

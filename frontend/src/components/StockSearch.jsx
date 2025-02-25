@@ -16,6 +16,7 @@ import {
   Typography,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import CloseIcon from '@mui/icons-material/Close';
 import { searchStocks } from '../services/api';
 
 const StockSearch = ({ onSelect }) => {
@@ -42,6 +43,7 @@ const StockSearch = ({ onSelect }) => {
         setResults([]);
       } else {
         setResults(data);
+        setIsSearching(true);
       }
     } catch (err) {
       setError('This stock symbol does not exist. Please enter a valid stock symbol.');
@@ -69,26 +71,18 @@ const StockSearch = ({ onSelect }) => {
   };
 
   const handleStockSelect = (stock) => {
-    setQuery('');
+    setQuery(stock.symbol);
     setResults([]);
     setError(null);
     setIsSearching(false);
     onSelect(stock.symbol);
   };
 
-  const handleClickOutside = (event) => {
-    if (!event.target.closest('.search-container')) {
-      setResults([]);
-      setIsSearching(false);
-    }
+  const handleCloseResults = () => {
+    setResults([]);
+    setError(null);
+    setIsSearching(false);
   };
-
-  React.useEffect(() => {
-    document.addEventListener('click', handleClickOutside);
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, []);
 
   return (
     <Box 
@@ -191,8 +185,35 @@ const StockSearch = ({ onSelect }) => {
               borderRadius: 2,
               bgcolor: 'background.paper',
               boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+              position: 'relative',
             }}
           >
+            <Box sx={{ 
+              position: 'sticky', 
+              top: 0, 
+              right: 0,
+              zIndex: 1,
+              display: 'flex',
+              justifyContent: 'flex-end',
+              bgcolor: 'background.paper',
+              borderBottom: '1px solid',
+              borderColor: 'divider',
+              px: 1,
+              py: 0.5
+            }}>
+              <IconButton
+                onClick={handleCloseResults}
+                size="small"
+                sx={{
+                  color: 'text.secondary',
+                  '&:hover': {
+                    color: 'primary.main',
+                  }
+                }}
+              >
+                <CloseIcon fontSize="small" />
+              </IconButton>
+            </Box>
             <List>
               {results.map((stock) => (
                 <ListItem key={stock.symbol} disablePadding>
@@ -313,6 +334,16 @@ const StockSearch = ({ onSelect }) => {
                 fontWeight: 500
               }
             }}
+            action={
+              <IconButton
+                aria-label="close"
+                color="inherit"
+                size="small"
+                onClick={handleCloseResults}
+              >
+                <CloseIcon fontSize="inherit" />
+              </IconButton>
+            }
           >
             {error}
           </Alert>
