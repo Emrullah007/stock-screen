@@ -226,6 +226,39 @@ stock-screen/
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+### Third-Party Licenses
+
+This project uses several third-party libraries and services, each with their own licenses:
+
+#### Frontend Dependencies
+- **React** - [MIT License](https://github.com/facebook/react/blob/main/LICENSE)
+- **Material-UI** - [MIT License](https://github.com/mui/material-ui/blob/master/LICENSE)
+- **Chart.js** - [MIT License](https://github.com/chartjs/Chart.js/blob/master/LICENSE.md)
+- **Vite** - [MIT License](https://github.com/vitejs/vite/blob/main/LICENSE)
+- **React Router** - [MIT License](https://github.com/remix-run/react-router/blob/main/LICENSE)
+- **Axios** - [MIT License](https://github.com/axios/axios/blob/master/LICENSE)
+
+#### Backend Dependencies
+- **Python** - [PSF License](https://docs.python.org/3/license.html)
+- **Azure Functions** - [MIT License](https://github.com/Azure/azure-functions-python-worker/blob/dev/LICENSE)
+- **yfinance** - [Apache License 2.0](https://github.com/ranaroussi/yfinance/blob/main/LICENSE.txt)
+- **pandas** - [BSD 3-Clause License](https://github.com/pandas-dev/pandas/blob/main/LICENSE)
+- **numpy** - [BSD 3-Clause License](https://github.com/numpy/numpy/blob/main/LICENSE.txt)
+
+#### API Services
+- **Azure OpenAI** - Commercial License (Requires API key)
+- **NewsAPI** - Commercial License (Requires API key)
+
+### Usage Restrictions
+
+When using this project, please be aware of the following:
+1. The MIT License of this project applies to our original code
+2. Third-party components are subject to their respective licenses
+3. API services (Azure OpenAI, NewsAPI) require separate commercial agreements
+4. Some dependencies may have usage restrictions or attribution requirements
+
+For commercial use, ensure compliance with all third-party licenses and API terms of service.
+
 ## 🙏 Acknowledgments
 
 - OpenAI/Azure OpenAI for AI capabilities
