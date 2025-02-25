@@ -34,10 +34,33 @@ A sophisticated web application leveraging AI to provide comprehensive stock mar
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js 16+ for frontend
-- Python 3.8+ for backend
-- Azure OpenAI API access
-- NewsAPI key
+
+#### Development Environment Setup
+1. **Node.js 16+ for Frontend**
+   - Download and install from [Node.js official website](https://nodejs.org/)
+   - Verify installation: `node --version`
+   - This will include npm (Node Package Manager) needed for frontend dependencies
+
+2. **Python 3.8+ for Backend**
+   - Download and install from [Python official website](https://www.python.org/downloads/)
+   - Verify installation: `python3 --version`
+   - Make sure pip (Python package manager) is included in the installation
+
+#### API Access Setup
+1. **Azure OpenAI API Access**
+   - Sign up for [Azure OpenAI Service](https://azure.microsoft.com/en-us/products/ai-services/openai-service)
+   - Follow the [Azure OpenAI deployment guide](https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/create-resource?pivots=web-portal):
+     1. Create an Azure account if you don't have one
+     2. Request access to Azure OpenAI Service
+     3. Create an Azure OpenAI resource
+     4. Deploy a model (we use GPT-4o)
+     5. Get your API key and endpoint from the Azure portal
+
+2. **NewsAPI Key**
+   - Sign up at [NewsAPI.org](https://newsapi.org/register)
+   - Get your API key from the [account dashboard](https://newsapi.org/account)
+   - Free tier available for development (100 requests/day)
+   - Consider paid tier for production use
 
 ### Backend Setup
 ```bash
