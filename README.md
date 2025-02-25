@@ -105,7 +105,7 @@ CORS_ORIGINS=http://localhost:5173,http://localhost:3000
 ## 🏗️ Project Structure
 
 ```
-stock-screen/
+.
 ├── frontend/                 # React + Vite frontend application
 │   ├── src/
 │   │   ├── components/      # Reusable UI components
@@ -115,10 +115,14 @@ stock-screen/
 │   ├── public/             # Static assets
 │   └── package.json        # Frontend dependencies
 │
-└── azure-functions-backend/ # Azure Functions backend
-    ├── function_app.py     # Main application file
-    ├── requirements.txt    # Python dependencies
-    └── .env.example        # Environment variables template
+├── azure-functions-backend/ # Azure Functions backend
+│   ├── function_app.py     # Main application file
+│   ├── requirements.txt    # Python dependencies
+│   └── .env.example        # Environment variables template
+│
+├── README.md               # Project documentation
+├── LICENSE                 # MIT license with terms
+└── .gitignore             # Git ignore rules
 ```
 
 ## 🔄 Development Workflow
@@ -308,11 +312,18 @@ This application is for informational purposes only. The AI-generated analyses a
 
 ## 📞 Support
 
-For support, please:
-1. Check the [Issues](../../issues) section
-2. Review existing documentation
-3. Create a new issue if needed
+For support and troubleshooting:
+1. Review the documentation sections above
+2. Check your environment variables are properly configured
+3. Ensure all dependencies are installed correctly
+4. Verify API keys and services are active
+5. Contact your system administrator or development team
 
 ---
 
-Built with ❤️ using React, Python, and Azure OpenAI 
+Built with ❤️ using:
+- Frontend: React, Vite, Material-UI, Chart.js
+- Backend: Python, Azure Functions
+- AI/ML: Azure OpenAI
+- Data: NewsAPI, Yahoo Finance
+- Development: Node.js, npm 
