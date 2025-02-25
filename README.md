@@ -191,6 +191,18 @@ CORS_ORIGINS=http://localhost:5173,http://localhost:3000
 - Company fundamentals
 - Market statistics
 
+![Stock Details View](docs/images/stock-details.png)
+*Detailed stock information with real-time price updates, market metrics, and technical indicators*
+
+### Stock Search
+- Intuitive search interface
+- Real-time stock lookup
+- Detailed search results with key metrics
+- Quick access to company information
+
+![Search Results](docs/images/search-results.png)
+*Smart search functionality with comprehensive stock information in results*
+
 ### AI Analysis System
 1. **Sentiment Analysis Agent**
    - Market news processing
@@ -198,11 +210,17 @@ CORS_ORIGINS=http://localhost:5173,http://localhost:3000
    - Sentiment evaluation
    - Risk assessment
 
+![Sentiment Analysis](docs/images/sentiment-analysis.png)
+*AI-powered sentiment analysis with technical indicators, market metrics, and news evaluation*
+
 2. **Investment Recommendation Agent**
    - Strategy generation
    - Risk-adjusted recommendations
    - Entry/exit point suggestions
    - Portfolio considerations
+
+![AI Recommendations](docs/images/ai-recommendations.png)
+*Personalized investment recommendations based on risk tolerance and investment horizon*
 
 ### User Interface
 - Modern Material Design
@@ -210,6 +228,9 @@ CORS_ORIGINS=http://localhost:5173,http://localhost:3000
 - Interactive charts
 - Real-time updates
 - Intuitive navigation
+
+![Main Dashboard](docs/images/main-view.png)
+*Clean, modern interface with real-time data and AI-powered insights*
 
 ## 🚀 Deployment
 
