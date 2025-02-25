@@ -39,28 +39,13 @@ A sophisticated web application leveraging AI to provide comprehensive stock mar
 - Azure OpenAI API access
 - NewsAPI key
 
-### Frontend Setup
-```bash
-# Navigate to frontend directory
-cd frontend
-
-# Install dependencies
-npm install
-
-# Create environment file
-cp .env.example .env.local
-
-# Start development server
-npm run dev
-```
-
 ### Backend Setup
 ```bash
 # Navigate to backend directory
 cd azure-functions-backend
 
 # Create virtual environment
-python -m venv venv
+python3 -m venv venv
 
 # Activate virtual environment
 source venv/bin/activate  # Unix/macOS
@@ -74,6 +59,21 @@ cp .env.example .env
 
 # Start development server
 func start
+```
+
+### Frontend Setup
+```bash
+# Navigate to frontend directory
+cd frontend
+
+# Install dependencies
+npm install
+
+# Create environment file
+cp .env.example .env.local
+
+# Start development server
+npm run dev
 ```
 
 ## 🔧 Configuration
