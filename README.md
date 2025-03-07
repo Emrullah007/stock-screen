@@ -298,7 +298,15 @@ The following files have been added to support Azure Static Web Apps:
 
    - Click "Review + create" and then "Create"
 
-2. **Update Environment Variables**
+2. **Set up GitHub Secret**
+   - After creating the Azure Static Web App, you'll receive a deployment token
+   - Go to your GitHub repository → Settings → Secrets and variables → Actions
+   - Click "New repository secret"
+   - Name: `AZURE_STATIC_WEB_APPS_API_TOKEN`
+   - Value: Paste the deployment token from Azure
+   - Click "Add secret"
+
+3. **Update Environment Variables**
    After deployment, add environment variables in the Azure Portal:
    - Go to your Static Web App resource
    - Click on "Configuration" in the left menu
@@ -309,7 +317,7 @@ The following files have been added to support Azure Static Web Apps:
      - NEWS_API_KEY
      - SECRET_KEY
 
-3. **Troubleshooting**
+4. **Troubleshooting**
    - **CORS Issues**:
      - Ensure your backend's CORS settings include your Azure Static Web App URL
      - Check the `staticwebapp.config.json` file for proper API routing
@@ -320,7 +328,7 @@ The following files have been added to support Azure Static Web Apps:
      - Verify that your build commands work locally
      - Ensure all required environment variables are set
 
-4. **Additional Resources**
+5. **Additional Resources**
    - [Azure Static Web Apps Documentation](https://docs.microsoft.com/en-us/azure/static-web-apps/)
    - [GitHub Actions for Azure Static Web Apps](https://docs.microsoft.com/en-us/azure/static-web-apps/github-actions-workflow)
    - [Troubleshooting Azure Static Web Apps](https://docs.microsoft.com/en-us/azure/static-web-apps/troubleshooting)
