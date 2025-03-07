@@ -423,7 +423,7 @@ const Home = () => {
             pt: 2
           }}>
             <Typography variant="caption" color="text.secondary">
-              © 2024 AI-Powered Stock Analysis. All rights reserved.
+              © {new Date().getFullYear()} AI-Powered Stock Analysis. All rights reserved. Developed by Emrullah Celik.
             </Typography>
             <Typography variant="caption" color="text.secondary">
               Version 1.0.0
