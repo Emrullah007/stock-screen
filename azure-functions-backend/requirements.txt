@@ -27,4 +27,4 @@ python-dotenv==1.0.1    # Environment variable management
 typing-extensions>=4.11,<5  # Enhanced type hinting support
 
 # Azure OpenAI SDK
-azure-openai>=1.0.0     # Azure OpenAI service integration
+azure.openai>=1.0.0     # Azure OpenAI service integration
