@@ -11,7 +11,6 @@ A sophisticated web application leveraging AI to provide comprehensive stock mar
 - Live stock data with price, volume, and market metrics
 - Interactive price charts with historical data visualization
 - Company information and key financial statistics
-- Technical indicators and market trends
 - Comprehensive financial metrics display
 
 ### AI-Powered Intelligence
@@ -26,7 +25,6 @@ A sophisticated web application leveraging AI to provide comprehensive stock mar
   - Generates personalized investment strategies
   - Adapts to user's risk tolerance
   - Provides actionable entry/exit points
-  - Monitors market conditions
   - Risk-adjusted portfolio suggestions
 
 ### Modern User Experience
@@ -41,12 +39,12 @@ A sophisticated web application leveraging AI to provide comprehensive stock mar
 ### Prerequisites
 
 #### Development Environment Setup
-1. **Node.js 16+ for Frontend**
+1. **Node.js 18+ for Frontend**
    - Download and install from [Node.js official website](https://nodejs.org/)
    - Verify installation: `node --version`
    - This will include npm (Node Package Manager) needed for frontend dependencies
 
-2. **Python 3.8+ for Backend**
+2. **Python 3.11+ for Backend**
    - Download and install from [Python official website](https://www.python.org/downloads/)
    - Verify installation: `python3 --version`
    - Make sure pip (Python package manager) is included in the installation
@@ -98,7 +96,7 @@ cd frontend
 npm install
 
 # Create environment file
-cp .env.example .env.local
+cp .env.example .env
 
 # Start development server
 npm run dev
@@ -139,13 +137,16 @@ CORS_ORIGINS=http://localhost:5173,http://localhost:3000
 │   │   ├── components/           # Reusable UI components
 │   │   ├── pages/               # Page components
 │   │   ├── services/            # API services
-│   │   └── utils/               # Utility functions
+│   │   ├── App.jsx              # Main application component
+│   │   ├── main.jsx             # Application entry point
+│   │   └── index.css            # Global styles
 │   ├── public/                  # Static assets
+│   │   └── web.config           # Azure Web App configuration
 │   ├── .env.example             # Environment variables template
 │   ├── package.json             # Frontend dependencies
 │   ├── vite.config.js           # Vite configuration
 │   ├── vercel.json              # Vercel deployment config
-│   └── eslint.config.js         # ESLint configuration
+│   └── startup.sh               # Azure Web App startup script
 │
 ├── azure-functions-backend/      # Azure Functions backend
 │   ├── function_app.py          # Main application file with API endpoints
@@ -154,12 +155,16 @@ CORS_ORIGINS=http://localhost:5173,http://localhost:3000
 │   ├── host.json               # Azure Functions host configuration
 │   └── local.settings.json     # Local development settings
 │
+├── .github/                     # GitHub configuration
+│   └── workflows/              # GitHub Actions workflows
+│       ├── webapp-deploy.yml   # Frontend deployment workflow
+│       └── backend-deploy.yml  # Backend deployment workflow
+│
 ├── docs/                        # Documentation
 │   └── images/                 # Application screenshots and images
 │
 ├── README.md                    # Project documentation
 ├── LICENSE                      # MIT license with terms
-├── .env.example                # Root environment template
 └── .gitignore                  # Git ignore rules
 ```
 
@@ -190,19 +195,15 @@ CORS_ORIGINS=http://localhost:5173,http://localhost:3000
 ## 📱 Features in Detail
 
 ### Stock Information
-- Real-time price updates with dynamic refresh
-- Interactive historical price charts with multiple timeframes
-- Comprehensive technical indicators and analysis
+- Real-time price updates
+- Interactive historical price charts
 - Detailed company fundamentals and metrics
-- Advanced market statistics and trends
 - Key financial ratios and performance indicators
 
 ### Stock Search & Discovery
 - Smart search functionality with real-time suggestions
 - Detailed company information in search results
 - Quick access to key financial metrics
-- Efficient stock symbol lookup
-- Comprehensive market data preview
 
 ### AI Analysis System
 1. **Sentiment Analysis Agent**
@@ -211,58 +212,40 @@ CORS_ORIGINS=http://localhost:5173,http://localhost:3000
    - Market sentiment evaluation and scoring
    - Risk factor identification and assessment
    - News impact analysis and correlation
-   - Trend identification and projection
 
 2. **Investment Recommendation Agent**
    - Personalized strategy generation
    - Risk tolerance-based recommendations
    - Dynamic entry/exit point suggestions
-   - Portfolio optimization guidance
-   - Market condition monitoring
    - Risk-adjusted return analysis
 
 ### User Interface
 - Clean, modern Material Design implementation
 - Responsive layout for all device sizes
 - Interactive data visualization
-- Real-time updates and notifications
 - Intuitive navigation and controls
-- Seamless user experience
 - Accessible design patterns
 
 ## 🚀 Deployment
 
-### Frontend (Vercel)
-1. Create a new project in Vercel
-2. Configure build settings:
-   ```
-   Build Command: npm run build
-   Output Directory: dist
-   Framework Preset: Vite
-   ```
-3. Add environment variables from `.env.example`
-4. Deploy your frontend code
+### Frontend (Azure Web App)
+1. Create an Azure Web App in your Azure portal
+2. Configure GitHub Actions workflow:
+   - Update the `webapp-deploy.yml` file with your Azure Web App name
+   - Add the Azure Web App publish profile as a GitHub secret
+3. Push changes to the main branch to trigger deployment
 
 ### Backend (Azure Functions)
 1. Create Azure Function App in your Azure portal
-2. Configure deployment:
-   ```
-   Runtime stack: Python
-   Version: 3.8
-   ```
-3. Set up environment variables from `.env.example`
-4. Deploy your function code using Azure Functions Core Tools:
-   ```bash
-   cd azure-functions-backend
-   func azure functionapp publish YOUR_FUNCTION_APP_NAME
-   ```
-5. Enable CORS for your frontend domain
+2. Configure GitHub Actions workflow:
+   - Update the `backend-deploy.yml` file with your Azure Function App name
+   - Add the Azure Function App publish profile as a GitHub secret
+3. Push changes to the main branch to trigger deployment
 
 ## 🔒 Security Considerations
 
 - API keys are stored securely in environment variables
 - CORS is configured for specific origins
-- Rate limiting is implemented on API endpoints
 - Input validation on all user inputs
 - Secure HTTPS communication
 
@@ -346,14 +329,6 @@ For detailed terms of service and licensing information, please refer to each se
 - [NewsAPI Terms](https://newsapi.org/terms)
 - [Yahoo Finance Terms](https://legal.yahoo.com/us/en/yahoo/terms/otos/index.html)
 
-## 🙏 Acknowledgments
-
-- OpenAI/Azure OpenAI for AI capabilities
-- NewsAPI for market news data
-- Material-UI for components
-- Chart.js for visualizations
-- yfinance for stock data
-
 ## ⚠️ Disclaimer
 
 This application is for informational purposes only. The AI-generated analyses and recommendations should not be considered as financial advice. Always consult with a qualified financial advisor before making investment decisions.
@@ -365,13 +340,13 @@ For support and troubleshooting:
 2. Check your environment variables are properly configured
 3. Ensure all dependencies are installed correctly
 4. Verify API keys and services are active
-5. Contact your system administrator or development team
 
 ---
 
-Built with ❤️ using:
+© 2025 AI-Powered Stock Analysis. Developed by Emrullah Celik
+
+Built with:
 - Frontend: React, Vite, Material-UI, Chart.js
 - Backend: Python, Azure Functions
 - AI/ML: Azure OpenAI
-- Data: NewsAPI, Yahoo Finance
-- Development: Node.js, npm 
+- Data: NewsAPI, Yahoo Finance 
