@@ -30,6 +30,14 @@ jobs:
         cd frontend
         npm run build
         
+    # Optimize build output to reduce size
+    - name: Optimize build output
+      run: |
+        cd frontend/dist
+        find . -type f -name "*.js" -exec gzip -9 -k {} \;
+        find . -type f -name "*.css" -exec gzip -9 -k {} \;
+        find . -type f -name "*.html" -exec gzip -9 -k {} \;
+        
     - name: Deploy to Azure Static Web Apps
       uses: Azure/static-web-apps-deploy@v1
       with:
@@ -38,4 +46,6 @@ jobs:
         action: "upload"
         app_location: "frontend"
         output_location: "dist"
-        skip_app_build: true # We already built the app in the previous step 
+        skip_app_build: true # We already built the app in the previous step
+        # Remove api_location since we're deploying the backend separately
+        skip_api_build: true 
