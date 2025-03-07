@@ -211,7 +211,6 @@ CORS_ORIGINS=http://localhost:5173,http://localhost:3000,https://*.azurestaticap
 │
 ├── staticwebapp.config.json    # Azure Static Web Apps configuration
 ├── test-local.sh               # Local testing script
-├── .env.example                # Root environment template
 ├── README.md                   # Project documentation
 ├── LICENSE                     # MIT license with terms
 └── .gitignore                  # Git ignore rules
