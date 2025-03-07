@@ -7,6 +7,8 @@ from datetime import datetime, timedelta
 import yfinance as yf
 from openai import AzureOpenAI
 from dotenv import load_dotenv
+from functools import lru_cache
+import time
 
 # Load environment variables from .env file
 load_dotenv()
@@ -20,12 +22,16 @@ app = func.FunctionApp()
 # Initialize dependencies lazily
 _openai = None
 
+# Cache for stock data (TTL: 5 minutes)
+CACHE_TTL = 300  # 5 minutes in seconds
+stock_cache = {}
+
 def get_openai() -> AzureOpenAI:
     """Initialize Azure OpenAI client"""
     return AzureOpenAI(
         api_key=os.environ.get('AZURE_API_KEY'),
         azure_endpoint=os.environ.get('AZURE_ENDPOINT'),
-        api_version="2024-08-01-preview"
+        api_version="2024-02-15-preview"
     )
 
 def get_newsapi():
@@ -35,6 +41,82 @@ def get_newsapi():
         'base_url': 'https://newsapi.org/v2'
     }
 
+def is_cache_valid(cache_time):
+    """Check if cached data is still valid"""
+    return time.time() - cache_time < CACHE_TTL
+
+def get_cached_stock_data(symbol: str):
+    """Get stock data from cache if available and valid"""
+    cache_key = symbol.upper()
+    if cache_key in stock_cache:
+        cached_data, cache_time = stock_cache[cache_key]
+        if is_cache_valid(cache_time):
+            return cached_data
+    return None
+
+def cache_stock_data(symbol: str, data: dict):
+    """Cache stock data with timestamp"""
+    stock_cache[symbol.upper()] = (data, time.time())
+
+def get_stock_data(symbol: str):
+    """Get stock data with caching"""
+    # Check cache first
+    cached_data = get_cached_stock_data(symbol)
+    if cached_data:
+        return cached_data
+
+    # If not in cache, fetch from yfinance
+    ticker = yf.Ticker(symbol)
+    info = ticker.info
+    
+    if not info or not info.get('regularMarketPrice'):
+        return None
+        
+    data = {
+        'symbol': symbol,
+        'info': {
+            'name': info.get('longName', ''),
+            'sector': info.get('sector', ''),
+            'industry': info.get('industry', ''),
+            'current_price': round(info.get('regularMarketPrice', 0), 2),
+            'currency': info.get('currency', 'USD'),
+            'market_cap': info.get('marketCap', 0),
+            'pe_ratio': round(info.get('forwardPE', 0), 2) if info.get('forwardPE') else None,
+            'dividend_yield': round(info.get('dividendYield', 0) * 100, 2) if info.get('dividendYield') else None,
+            'day_high': round(info.get('dayHigh', 0), 2),
+            'day_low': round(info.get('dayLow', 0), 2),
+            'volume': info.get('volume', 0),
+            'change_percent': round(info.get('regularMarketChangePercent', 0), 2)
+        }
+    }
+    
+    # Cache the data
+    cache_stock_data(symbol, data)
+    return data
+
+@lru_cache(maxsize=100)
+def get_stock_history(symbol: str, period: str = "1mo"):
+    """Get stock history with caching"""
+    ticker = yf.Ticker(symbol)
+    history = ticker.history(period=period)
+    
+    if history.empty:
+        return None
+        
+    return {
+        'history': [
+            {
+                'date': index.isoformat(),
+                'open': row['Open'],
+                'high': row['High'],
+                'low': row['Low'],
+                'close': row['Close'],
+                'volume': row['Volume']
+            }
+            for index, row in history.iterrows()
+        ]
+    }
+
 def add_cors_headers(resp: func.HttpResponse) -> func.HttpResponse:
     """Add CORS headers to the response"""
     resp.headers['Access-Control-Allow-Origin'] = '*'
@@ -42,71 +124,6 @@ def add_cors_headers(resp: func.HttpResponse) -> func.HttpResponse:
     resp.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, Accept'
     resp.headers['Access-Control-Max-Age'] = '86400'
     return resp
-
-def get_stock_data(symbol: str):
-    """Get stock data from Yahoo Finance."""
-    try:
-        ticker = yf.Ticker(symbol)
-        info = ticker.info
-        
-        if not info:
-            raise Exception("No data found for symbol")
-
-        # Get raw dividend yield and log it
-        raw_dividend_yield = info.get("dividendYield")
-        logger.info(f"Raw dividend yield for {symbol}: {raw_dividend_yield}")
-        
-        # Handle dividend yield - ensure it's a proper decimal
-        try:
-            dividend_yield = float(raw_dividend_yield) if raw_dividend_yield is not None else 0
-            logger.info(f"Processed dividend yield: {dividend_yield}")
-        except (TypeError, ValueError):
-            logger.warning(f"Invalid dividend yield value: {raw_dividend_yield}")
-            dividend_yield = 0
-
-        return {
-            "symbol": symbol.upper(),
-            "name": info.get("longName", ""),
-            "current_price": round(info.get("currentPrice", 0), 2),
-            "change_percent": round(info.get("regularMarketChangePercent", 0), 2),
-            "volume": info.get("volume", 0),
-            "market_cap": info.get("marketCap", 0),
-            "pe_ratio": round(info.get("trailingPE", 0), 2),
-            "dividend_yield": dividend_yield,  # Already in decimal form (e.g., 0.0081 for 0.81%)
-            "sector": info.get("sector", ""),
-            "industry": info.get("industry", ""),
-            "day_high": round(info.get("dayHigh", 0), 2),
-            "day_low": round(info.get("dayLow", 0), 2),
-            "currency": info.get("currency", "USD")
-        }
-    except Exception as e:
-        logger.error(f"Error fetching stock data: {str(e)}")
-        raise
-
-def get_stock_history(symbol: str, period: str = "1mo"):
-    """Get historical stock data from Yahoo Finance."""
-    try:
-        ticker = yf.Ticker(symbol)
-        history = ticker.history(period=period)
-        
-        if history.empty:
-            raise Exception("No historical data found")
-            
-        result = []
-        for index, row in history.iterrows():
-            result.append({
-                "date": index.strftime("%Y-%m-%d"),
-                "open": round(float(row["Open"]), 2),
-                "high": round(float(row["High"]), 2),
-                "low": round(float(row["Low"]), 2),
-                "close": round(float(row["Close"]), 2),
-                "volume": int(row["Volume"])
-            })
-            
-        return result
-    except Exception as e:
-        logger.error(f"Error fetching stock history: {str(e)}")
-        raise
 
 @app.route(route="GetStockData", auth_level=func.AuthLevel.ANONYMOUS)
 def GetStockData(req: func.HttpRequest) -> func.HttpResponse:
