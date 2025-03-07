@@ -52,14 +52,12 @@ def get_stock_data(symbol: str):
         if not info:
             raise Exception("No data found for symbol")
 
-        # Get raw dividend yield and log it
+        # Get raw dividend yield
         raw_dividend_yield = info.get("dividendYield")
-        logger.info(f"Raw dividend yield for {symbol}: {raw_dividend_yield}")
         
         # Handle dividend yield - ensure it's a proper decimal
         try:
             dividend_yield = float(raw_dividend_yield) if raw_dividend_yield is not None else 0
-            logger.info(f"Processed dividend yield: {dividend_yield}")
         except (TypeError, ValueError):
             logger.warning(f"Invalid dividend yield value: {raw_dividend_yield}")
             dividend_yield = 0
