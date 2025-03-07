@@ -413,6 +413,22 @@ const Home = () => {
               While we strive for accuracy, markets are inherently unpredictable and past performance does not guarantee future results.
             </Typography>
           </Alert>
+          <Box sx={{ 
+            mt: 2, 
+            display: 'flex', 
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            borderTop: '1px solid',
+            borderColor: 'divider',
+            pt: 2
+          }}>
+            <Typography variant="caption" color="text.secondary">
+              © 2024 AI-Powered Stock Analysis. All rights reserved.
+            </Typography>
+            <Typography variant="caption" color="text.secondary">
+              Version 1.0.0
+            </Typography>
+          </Box>
         </Paper>
       </Box>
     </Container>
