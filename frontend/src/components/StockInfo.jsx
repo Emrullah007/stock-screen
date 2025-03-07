@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Typography, Paper, Chip, Grid } from '@mui/material';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import { formatTimestamp } from '../utils/dateUtils';
 
 const formatMarketCap = (value) => {
   if (!value) return 'N/A';
@@ -262,7 +263,7 @@ const StockInfo = ({ stockInfo, historicalData }) => {
 
       <Box sx={{ mt: 2, pt: 1, borderTop: '1px solid rgba(0, 0, 0, 0.1)' }}>
         <Typography variant="caption" color="text.secondary" display="block">
-          Last Updated: {new Date().toLocaleString()}
+          Last Updated: {formatTimestamp(new Date())}
         </Typography>
         <Typography variant="caption" color="text.secondary" display="block">
           Last Trade: {historicalData && historicalData.length > 0 

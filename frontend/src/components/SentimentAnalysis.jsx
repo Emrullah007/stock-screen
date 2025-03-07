@@ -25,6 +25,7 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import PeopleIcon from '@mui/icons-material/People';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import ReactMarkdown from 'react-markdown';
+import { formatTimestamp } from '../utils/dateUtils';
 
 // Market metrics explanations
 const metricExplanations = {
@@ -333,7 +334,7 @@ const SentimentAnalysis = ({ data, onClose }) => {
 
         <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
           <Typography variant="caption" color="text.secondary">
-            Last Updated: {new Date(data.analysis_timestamp).toLocaleString()}
+            Last Updated: {formatTimestamp(data.analysis_timestamp)}
           </Typography>
         </Box>
       </CardContent>

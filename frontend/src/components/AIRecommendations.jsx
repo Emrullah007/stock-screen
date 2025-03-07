@@ -17,6 +17,7 @@ import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import ReactMarkdown from 'react-markdown';
 import { getAIRecommendations } from '../services/api';
 import LoadingModal from './LoadingModal';
+import { formatTimestamp } from '../utils/dateUtils';
 
 const AIRecommendations = ({ symbol, sentimentData, onGenerateSentiment }) => {
   const [riskLevel, setRiskLevel] = useState('moderate');
@@ -291,7 +292,7 @@ const AIRecommendations = ({ symbol, sentimentData, onGenerateSentiment }) => {
                 textAlign: 'right',
                 ml: 2
               }}>
-                Last Updated: {new Date(recommendation.analysis_timestamp).toLocaleString()}
+                Last Updated: {formatTimestamp(recommendation.analysis_timestamp)}
               </Typography>
             </Box>
           </Paper>
