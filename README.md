@@ -169,8 +169,12 @@ CORS_ORIGINS=http://localhost:5173,http://localhost:3000,https://*.azurestaticap
 │   │   └── utils/               # Utility functions
 │   ├── public/                  # Static assets
 │   ├── .env.example             # Environment variables template
+│   ├── .env.production          # Production environment variables
 │   ├── package.json             # Frontend dependencies
 │   ├── vite.config.js           # Vite configuration
+│   ├── index.html               # HTML entry point
+│   ├── vercel.json              # Vercel configuration (legacy)
+│   ├── .npmrc                   # NPM configuration
 │   └── eslint.config.js         # ESLint configuration
 │
 ├── azure-functions-backend/      # Azure Functions backend
@@ -188,6 +192,7 @@ CORS_ORIGINS=http://localhost:5173,http://localhost:3000,https://*.azurestaticap
 │
 ├── staticwebapp.config.json    # Azure Static Web Apps configuration
 ├── test-local.sh               # Local testing script
+├── .env.example                # Root environment template
 ├── README.md                   # Project documentation
 ├── LICENSE                     # MIT license with terms
 └── .gitignore                  # Git ignore rules
