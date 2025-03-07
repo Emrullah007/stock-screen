@@ -1,5 +1,5 @@
 import React from 'react';
-import { ThemeProvider, createTheme, CssBaseline } from '@mui/material';
+import { ThemeProvider, createTheme, CssBaseline, Box, Typography } from '@mui/material';
 import Home from './pages/Home';
 
 const theme = createTheme({
@@ -74,11 +74,32 @@ const theme = createTheme({
 });
 
 function App() {
+  const currentYear = new Date().getFullYear();
+  
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <div className="app">
+      <div className="app" style={{ 
+        display: 'flex', 
+        flexDirection: 'column', 
+        minHeight: '100vh' 
+      }}>
         <Home />
+        <Box 
+          component="footer" 
+          sx={{ 
+            py: 3, 
+            mt: 'auto', 
+            textAlign: 'center',
+            borderTop: '1px solid',
+            borderColor: 'divider',
+            backgroundColor: 'background.paper'
+          }}
+        >
+          <Typography variant="body2" color="text.secondary">
+            © {currentYear} AI-Powered Stock Analysis. Developed by Emrullah Celik
+          </Typography>
+        </Box>
       </div>
     </ThemeProvider>
   );
