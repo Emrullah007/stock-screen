@@ -30,6 +30,11 @@ jobs:
         cd frontend
         npm run build
         
+    - name: Copy startup script to dist
+      run: |
+        chmod +x frontend/startup.sh
+        cp frontend/startup.sh frontend/dist/
+        
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
