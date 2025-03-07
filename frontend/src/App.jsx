@@ -78,10 +78,6 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <div className="app">
-        <header className="app-header">
-          <h1>AI-Powered Stock Analysis</h1>
-          <p>Real-time market insights with artificial intelligence</p>
-        </header>
         <Home />
       </div>
     </ThemeProvider>

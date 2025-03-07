@@ -118,7 +118,7 @@ const Home = () => {
               mb: 2
             }}
           >
-            Market Insights Enhanced by Artificial Intelligence
+            Smart Investment Decisions Powered by Data Science and AI
           </Typography>
 
           <Box sx={{ 
