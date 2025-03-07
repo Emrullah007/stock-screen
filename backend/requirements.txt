@@ -13,7 +13,7 @@ python-multipart==0.0.9
 sqlalchemy==2.0.27
 pydantic==2.6.1
 pydantic-settings==2.1.0
-transformers==4.38.2
+transformers==4.48.0
 torch==2.2.1
 aiohttp==3.9.3
 newsapi-python==0.2.7 
