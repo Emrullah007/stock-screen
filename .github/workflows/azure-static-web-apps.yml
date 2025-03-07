@@ -32,23 +32,11 @@ jobs:
           cache: 'npm'
           cache-dependency-path: 'frontend/package-lock.json'
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-          cache: 'pip'
-          cache-dependency-path: 'azure-functions-backend/requirements.txt'
-
       - name: Install Frontend Dependencies
         run: |
           cd frontend
           npm ci
-      
-      - name: Install Backend Dependencies
-        run: |
-          cd azure-functions-backend
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          npm run build:azure
       
       - name: Build And Deploy
         id: builddeploy
@@ -62,12 +50,10 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          app_location: "/frontend"
-          api_location: "/azure-functions-backend"
+          app_location: "frontend"
+          api_location: ""
           output_location: "dist"
-          app_build_command: "npm run build:azure"
-          api_build_command: "pip install -r requirements.txt"
-          action: "upload"
+          skip_app_build: true
           
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
@@ -80,4 +66,4 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
           action: "close"
-          app_location: "/frontend" 
+          app_location: "frontend" 
