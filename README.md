@@ -173,7 +173,6 @@ CORS_ORIGINS=http://localhost:5173,http://localhost:3000,https://*.azurestaticap
 │   ├── package.json             # Frontend dependencies
 │   ├── vite.config.js           # Vite configuration
 │   ├── index.html               # HTML entry point
-│   ├── vercel.json              # Vercel configuration (legacy)
 │   ├── .npmrc                   # NPM configuration
 │   └── eslint.config.js         # ESLint configuration
 │
