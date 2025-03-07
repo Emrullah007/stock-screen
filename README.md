@@ -51,6 +51,11 @@ A sophisticated web application leveraging AI to provide comprehensive stock mar
    - Verify installation: `python3 --version`
    - Make sure pip (Python package manager) is included in the installation
 
+3. **Azure Functions Core Tools**
+   - Install with npm: `npm install -g azure-functions-core-tools@4 --unsafe-perm true`
+   - Verify installation: `func --version`
+   - Required for local backend development and deployment
+
 #### API Access Setup
 1. **Azure OpenAI API Access**
    - Sign up for [Azure OpenAI Service](https://azure.microsoft.com/en-us/products/ai-services/openai-service)
@@ -104,6 +109,28 @@ cp .env.example .env.local
 npm run dev
 ```
 
+### Complete Local Testing
+We've provided a convenient script to test the entire application locally:
+
+```bash
+# Make the test script executable
+chmod +x test-local.sh
+
+# Run the test script
+./test-local.sh
+```
+
+This will:
+1. Start the Azure Functions backend on port 7071
+2. Start the frontend development server on port 5173
+3. Open both in the background
+4. Show you the URLs to access them
+
+You can then:
+- Open http://localhost:5173 in your browser
+- Test all the application features
+- Press Ctrl+C in the terminal when you're done to stop both servers
+
 ## 🔧 Configuration
 
 ### Frontend Environment Variables (.env)
@@ -127,7 +154,7 @@ NEWS_API_KEY=your_newsapi_key_here
 
 # Security Settings
 SECRET_KEY=your_secure_key_here
-CORS_ORIGINS=http://localhost:5173,http://localhost:3000
+CORS_ORIGINS=http://localhost:5173,http://localhost:3000,https://*.azurestaticapps.net,https://*.azurewebsites.net
 ```
 
 ## 🏗️ Project Structure
@@ -144,7 +171,6 @@ CORS_ORIGINS=http://localhost:5173,http://localhost:3000
 │   ├── .env.example             # Environment variables template
 │   ├── package.json             # Frontend dependencies
 │   ├── vite.config.js           # Vite configuration
-│   ├── vercel.json              # Vercel deployment config
 │   └── eslint.config.js         # ESLint configuration
 │
 ├── azure-functions-backend/      # Azure Functions backend
@@ -157,9 +183,13 @@ CORS_ORIGINS=http://localhost:5173,http://localhost:3000
 ├── docs/                        # Documentation
 │   └── images/                 # Application screenshots and images
 │
-├── README.md                    # Project documentation
-├── LICENSE                      # MIT license with terms
-├── .env.example                # Root environment template
+├── .github/workflows/          # GitHub Actions workflows
+│   └── azure-static-web-apps.yml # Azure Static Web Apps deployment
+│
+├── staticwebapp.config.json    # Azure Static Web Apps configuration
+├── test-local.sh               # Local testing script
+├── README.md                   # Project documentation
+├── LICENSE                     # MIT license with terms
 └── .gitignore                  # Git ignore rules
 ```
 
@@ -186,6 +216,13 @@ CORS_ORIGINS=http://localhost:5173,http://localhost:3000
    npm run dev
    ```
    Frontend will be available at http://localhost:5173
+
+3. **Test Complete Setup**
+   ```bash
+   # From project root
+   ./test-local.sh
+   ```
+   This will start both frontend and backend servers and ensure they can communicate properly.
 
 ## 📱 Features in Detail
 
@@ -232,16 +269,68 @@ CORS_ORIGINS=http://localhost:5173,http://localhost:3000
 
 ## 🚀 Deployment
 
-### Frontend (Vercel)
-1. Create a new project in Vercel
-2. Configure build settings:
-   ```
-   Build Command: npm run build
-   Output Directory: dist
-   Framework Preset: Vite
-   ```
-3. Add environment variables from `.env.example`
-4. Deploy your frontend code
+### Azure Static Web Apps Deployment
+
+#### Configuration Files
+The following files have been added to support Azure Static Web Apps:
+
+1. `staticwebapp.config.json` - Configuration for routes and settings
+2. `.github/workflows/azure-static-web-apps.yml` - GitHub Actions workflow
+3. `frontend/.env.production` - Production environment variables
+4. `test-local.sh` - Script to test the setup locally
+
+#### Deployment Steps
+
+1. **Create an Azure Static Web App**
+   - Go to the [Azure Portal](https://portal.azure.com)
+   - Search for "Static Web Apps" and click "Create"
+   - Fill in the basic details:
+     - Subscription: Your Azure subscription
+     - Resource Group: Create new or use existing
+     - Name: Choose a name for your app (e.g., stock-analysis-app)
+     - Hosting Plan: Free (or Standard for production)
+     - Region: Choose the closest to your users
+
+   - Source Control details:
+     - Source: GitHub
+     - Organization: Your GitHub organization/username
+     - Repository: Your repository name
+     - Branch: azure-functions (or your main branch)
+
+   - Build details:
+     - Build Preset: Custom
+     - App location: `/frontend`
+     - API location: `/azure-functions-backend`
+     - Output location: `dist`
+
+   - Click "Review + create" and then "Create"
+
+2. **Update Environment Variables**
+   After deployment, add environment variables in the Azure Portal:
+   - Go to your Static Web App resource
+   - Click on "Configuration" in the left menu
+   - Add the following environment variables:
+     - AZURE_API_KEY
+     - AZURE_ENDPOINT
+     - AZURE_MODEL_NAME
+     - NEWS_API_KEY
+     - SECRET_KEY
+
+3. **Troubleshooting**
+   - **CORS Issues**:
+     - Ensure your backend's CORS settings include your Azure Static Web App URL
+     - Check the `staticwebapp.config.json` file for proper API routing
+     - Verify that your frontend is using the correct API URL
+
+   - **Deployment Failures**:
+     - Check the GitHub Actions logs for specific errors
+     - Verify that your build commands work locally
+     - Ensure all required environment variables are set
+
+4. **Additional Resources**
+   - [Azure Static Web Apps Documentation](https://docs.microsoft.com/en-us/azure/static-web-apps/)
+   - [GitHub Actions for Azure Static Web Apps](https://docs.microsoft.com/en-us/azure/static-web-apps/github-actions-workflow)
+   - [Troubleshooting Azure Static Web Apps](https://docs.microsoft.com/en-us/azure/static-web-apps/troubleshooting)
 
 ### Backend (Azure Functions)
 1. Create Azure Function App in your Azure portal
@@ -256,7 +345,7 @@ CORS_ORIGINS=http://localhost:5173,http://localhost:3000
    cd azure-functions-backend
    func azure functionapp publish YOUR_FUNCTION_APP_NAME
    ```
-5. Enable CORS for your frontend domain
+5. Enable CORS for your Azure Static Web App domain
 
 ## 🔒 Security Considerations
 
