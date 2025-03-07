@@ -11,7 +11,7 @@ pandas==2.2.1           # Data manipulation and analysis
 numpy==1.26.4           # Numerical computing support
 
 # AI/ML Services
-openai==1.60.1          # OpenAI API integration for AI recommendations
+openai==1.60.1          # OpenAI API integration for AI recommendations (includes Azure OpenAI support)
 
 # HTTP and Networking
 requests==2.32.3        # HTTP requests library
@@ -25,6 +25,3 @@ python-dotenv==1.0.1    # Environment variable management
 
 # Type Hints and Extensions
 typing-extensions>=4.11,<5  # Enhanced type hinting support
-
-# Azure OpenAI SDK
-azure-openai-client>=1.0.0     # Azure OpenAI service integration
