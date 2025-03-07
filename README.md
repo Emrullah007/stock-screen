@@ -305,6 +305,7 @@ The following files have been added to support Azure Static Web Apps:
    - Name: `AZURE_STATIC_WEB_APPS_API_TOKEN`
    - Value: Paste the deployment token from Azure
    - Click "Add secret"
+   - Note: This token is only used by GitHub Actions for deployment and should NOT be added to any .env files
 
 3. **Update Environment Variables**
    After deployment, add environment variables in the Azure Portal:
