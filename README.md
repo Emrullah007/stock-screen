@@ -72,6 +72,15 @@ A sophisticated web application leveraging AI to provide comprehensive stock mar
    - Free tier available for development (100 requests/day)
    - Consider paid tier for production use
 
+### Clone the Repository
+```bash
+# Clone the repository
+git clone https://github.com/YOUR_USERNAME/stock-screen.git
+
+# Navigate to the project directory
+cd stock-screen
+```
+
 ### Backend Setup
 ```bash
 # Navigate to backend directory
@@ -463,8 +472,25 @@ For support and troubleshooting:
 ---
 
 Built with ❤️ using:
-- Frontend: React, Vite, Material-UI, Chart.js
-- Backend: Python, Azure Functions
-- AI/ML: Azure OpenAI
-- Data: NewsAPI, Yahoo Finance
-- Development: Node.js, npm 
+- **Frontend**:
+  - React 18
+  - Material-UI (MUI)
+  - Chart.js & react-chartjs-2
+  - React Router
+  - Axios for API requests
+  - React Query for data fetching
+  - React Markdown for rendering
+  - Zustand for state management
+  - Vite for build tooling
+- **Backend**:
+  - Python 3.8+
+  - Azure Functions
+  - OpenAI API (via Azure)
+  - pandas & numpy for data processing
+  - yfinance for stock data
+  - NewsAPI for market news
+- **DevOps**:
+  - GitHub Actions
+  - Azure Static Web Apps
+  - ESLint & Prettier
+  - Vitest for testing 
