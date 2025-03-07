@@ -25,8 +25,8 @@ if ! command -v python3 &> /dev/null; then
     exit 1
 fi
 
-if ! command -v pip &> /dev/null; then
-    echo -e "${RED}pip is not installed. Please install it first.${NC}"
+if ! command -v pip3 &> /dev/null; then
+    echo -e "${RED}pip3 is not installed. Please install it first.${NC}"
     exit 1
 fi
 
@@ -52,7 +52,7 @@ source venv/bin/activate || { echo -e "${RED}Failed to activate virtual environm
 
 # Install dependencies
 echo -e "${YELLOW}Installing backend dependencies...${NC}"
-pip install -r requirements.txt || { echo -e "${RED}Failed to install backend dependencies${NC}"; exit 1; }
+pip3 install -r requirements.txt || { echo -e "${RED}Failed to install backend dependencies${NC}"; exit 1; }
 
 # Start Azure Functions in background
 echo -e "${GREEN}Starting Azure Functions...${NC}"
