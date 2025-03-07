@@ -12,6 +12,7 @@
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
+    "@babel/traverse": "7.23.2",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^5.16.14",
@@ -42,8 +43,5 @@
     "prettier": "^3.2.5",
     "vite": "^6.1.1",
     "vitest": "3.0.7"
-  },
-  "overrides": {
-    "@babel/traverse": "7.23.2"
   }
 }
