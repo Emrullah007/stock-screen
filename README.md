@@ -72,16 +72,38 @@ A sophisticated web application leveraging AI to provide comprehensive stock mar
    - Free tier available for development (100 requests/day)
    - Consider paid tier for production use
 
-### Clone the Repository
-```bash
-# Clone the repository
-git clone https://github.com/YOUR_USERNAME/stock-screen.git
+## 🔄 Development Workflow
 
-# Navigate to the project directory
-cd stock-screen
+You can set up and run the application components separately or together, depending on your needs.
+
+### Option 1: Complete Setup (Frontend + Backend)
+
+We've provided a convenient script to set up and run both frontend and backend simultaneously:
+
+```bash
+# Make the test script executable
+chmod +x test-local.sh
+
+# Run the test script
+./test-local.sh
 ```
 
-### Backend Setup
+This will:
+1. Start the Azure Functions backend on port 7071
+2. Start the frontend development server on port 5173
+3. Open both in the background
+4. Show you the URLs to access them
+
+You can then:
+- Open http://localhost:5173 in your browser
+- Test all the application features
+- Press Ctrl+C in the terminal when you're done to stop both servers
+
+### Option 2: Individual Component Setup
+
+If you prefer to set up and run components individually:
+
+#### Backend Setup
 ```bash
 # Navigate to backend directory
 cd azure-functions-backend
@@ -103,7 +125,16 @@ cp .env.example .env
 func start
 ```
 
-### Frontend Setup
+Backend will be available at:
+- API Endpoint: http://localhost:7071/api
+- Available Functions:
+  - `/GetStockData`: Get real-time stock information
+  - `/GetStockHistory`: Get historical price data
+  - `/GetSentimentAnalysis`: Get AI-powered sentiment analysis
+  - `/GetInvestmentRecommendation`: Get personalized investment recommendations
+  - `/SearchStocks`: Search for stocks by symbol
+
+#### Frontend Setup
 ```bash
 # Navigate to frontend directory
 cd frontend
@@ -118,27 +149,7 @@ cp .env.example .env.local
 npm run dev
 ```
 
-### Complete Local Testing
-We've provided a convenient script to test the entire application locally:
-
-```bash
-# Make the test script executable
-chmod +x test-local.sh
-
-# Run the test script
-./test-local.sh
-```
-
-This will:
-1. Start the Azure Functions backend on port 7071
-2. Start the frontend development server on port 5173
-3. Open both in the background
-4. Show you the URLs to access them
-
-You can then:
-- Open http://localhost:5173 in your browser
-- Test all the application features
-- Press Ctrl+C in the terminal when you're done to stop both servers
+Frontend will be available at http://localhost:5173
 
 ## 🔧 Configuration
 
@@ -205,37 +216,6 @@ CORS_ORIGINS=http://localhost:5173,http://localhost:3000,https://*.azurestaticap
 ├── LICENSE                     # MIT license with terms
 └── .gitignore                  # Git ignore rules
 ```
-
-## 🔄 Development Workflow
-
-1. **Start Backend Server**
-   ```bash
-   cd azure-functions-backend
-   source venv/bin/activate
-   func start
-   ```
-   Backend will be available at:
-   - API Endpoint: http://localhost:7071/api
-   - Available Functions:
-     - `/GetStockData`: Get real-time stock information
-     - `/GetStockHistory`: Get historical price data
-     - `/GetSentimentAnalysis`: Get AI-powered sentiment analysis
-     - `/GetInvestmentRecommendation`: Get personalized investment recommendations
-     - `/SearchStocks`: Search for stocks by symbol
-
-2. **Start Frontend Development Server**
-   ```bash
-   cd frontend
-   npm run dev
-   ```
-   Frontend will be available at http://localhost:5173
-
-3. **Test Complete Setup**
-   ```bash
-   # From project root
-   ./test-local.sh
-   ```
-   This will start both frontend and backend servers and ensure they can communicate properly.
 
 ## 📱 Features in Detail
 
@@ -462,12 +442,11 @@ This application is for informational purposes only. The AI-generated analyses a
 
 ## 📞 Support
 
-For support and troubleshooting:
+For troubleshooting:
 1. Review the documentation sections above
 2. Check your environment variables are properly configured
 3. Ensure all dependencies are installed correctly
 4. Verify API keys and services are active
-5. Contact your system administrator or development team
 
 ---
 
