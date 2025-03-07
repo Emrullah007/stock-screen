@@ -1,6 +1,30 @@
 {
   "routes": [
     {
+      "route": "/favicon.ico",
+      "headers": {
+        "cache-control": "must-revalidate, max-age=86400"
+      }
+    },
+    {
+      "route": "/favicon-*.png",
+      "headers": {
+        "cache-control": "must-revalidate, max-age=86400"
+      }
+    },
+    {
+      "route": "/apple-touch-icon.png",
+      "headers": {
+        "cache-control": "must-revalidate, max-age=86400"
+      }
+    },
+    {
+      "route": "/stock-icon.svg",
+      "headers": {
+        "cache-control": "must-revalidate, max-age=86400"
+      }
+    },
+    {
       "route": "/assets/*.css",
       "headers": {
         "content-type": "text/css"
@@ -25,7 +49,7 @@
   ],
   "navigationFallback": {
     "rewrite": "/index.html",
-    "exclude": ["/images/*.{png,jpg,gif}", "/css/*", "/js/*", "/api/*", "/assets/*"]
+    "exclude": ["/images/*.{png,jpg,gif}", "/css/*", "/js/*", "/api/*", "/assets/*", "/*.ico", "/*.png"]
   },
   "globalHeaders": {
     "content-security-policy": "default-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.azure.com https://*.newsapi.org https://*.azurewebsites.net https://*.azurestaticapps.net https://fonts.googleapis.com https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; img-src 'self' data: https://*; connect-src 'self' https://*.azure.com https://*.newsapi.org https://*.azurewebsites.net https://*.azurestaticapps.net;",
