@@ -15,6 +15,7 @@ load_dotenv()
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger('azure.functions')
 
+# Initialize Function App
 app = func.FunctionApp()
 
 # Initialize dependencies lazily
