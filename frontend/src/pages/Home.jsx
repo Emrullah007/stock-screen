@@ -46,8 +46,13 @@ const Home = () => {
         setHistoricalData([]);
       }
     } catch (err) {
-      setError('Error fetching stock data. Please try again.');
-      console.error('Error:', err);
+      const errorMessage = err.response?.status === 404 
+        ? `No data found for symbol "${symbol}". Please check the symbol and try again.`
+        : err.response?.status === 429
+        ? 'Too many requests. Please wait a moment and try again.'
+        : 'Error fetching stock data. Please try again.';
+      
+      setError(errorMessage);
       setHistoricalData([]);
     } finally {
       setLoading(false);
@@ -71,8 +76,13 @@ const Home = () => {
         }
       }, 100);
     } catch (err) {
-      setError('Error fetching sentiment analysis. Please try again.');
-      console.error('Error:', err);
+      const errorMessage = err.response?.status === 404 
+        ? `No sentiment data available for "${symbol}" at this time.`
+        : err.response?.status === 429
+        ? 'Too many requests. Please wait a moment and try again.'
+        : 'Error fetching sentiment analysis. Please try again.';
+      
+      setError(errorMessage);
     } finally {
       setSentimentLoading(false);
     }

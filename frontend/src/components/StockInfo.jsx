@@ -17,9 +17,6 @@ const formatMarketCap = (value) => {
 };
 
 const formatDividendYield = (value) => {
-  // Debug logging
-  console.log('Raw dividend yield:', value);
-  
   if (!value || value === 0) return 'N/A';
   
   // Value is already a percentage, just format it
@@ -44,10 +41,6 @@ const StockInfo = ({ stockInfo, historicalData }) => {
   const info = stockInfo.info;
   const { low: yearLow, high: yearHigh } = calculate52WeekRange(historicalData);
   
-  // Debug logging
-  console.log('Stock Info:', info);
-  console.log('Dividend Yield from API:', info.dividend_yield);
-
   return (
     <Paper elevation={1} sx={{ p: { xs: 1.5, sm: 2 }, borderRadius: 2 }}>
       {/* Header with company name and current price */}

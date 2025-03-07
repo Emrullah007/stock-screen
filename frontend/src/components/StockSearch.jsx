@@ -46,8 +46,13 @@ const StockSearch = ({ onSelect }) => {
         setIsSearching(true);
       }
     } catch (err) {
-      setError('This stock symbol does not exist. Please enter a valid stock symbol.');
-      console.error('Search error:', err);
+      const errorMessage = err.response?.status === 429
+        ? 'Too many requests. Please wait a moment and try again.'
+        : err.response?.status === 500
+        ? 'Server error. Please try again later.'
+        : `Stock "${query.toUpperCase()}" not found or invalid. Please enter a valid stock symbol.`;
+      
+      setError(errorMessage);
       setResults([]);
     } finally {
       setLoading(false);

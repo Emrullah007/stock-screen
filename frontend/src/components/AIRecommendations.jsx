@@ -53,8 +53,13 @@ const AIRecommendations = ({ symbol, sentimentData, onGenerateSentiment }) => {
         }
       }, 100);
     } catch (err) {
-      setError('Error getting AI recommendations. Please try again.');
-      console.error('Error:', err);
+      const errorMessage = err.response?.status === 429
+        ? 'Too many requests. Please wait a moment and try again.'
+        : err.response?.status === 500
+        ? 'Server error generating recommendations. Please try again later.'
+        : 'Error getting AI recommendations. Please try again.';
+      
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
