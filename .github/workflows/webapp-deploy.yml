@@ -26,6 +26,11 @@ jobs:
         rm -rf node_modules package-lock.json
         npm install --legacy-peer-deps
         
+    - name: Setup environment
+      run: |
+        cd frontend
+        cp .env.production .env
+        
     - name: Build
       run: |
         cd frontend
