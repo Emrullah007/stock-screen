@@ -1,6 +1,6 @@
 # AI-Powered Stock Market Analysis 📈
 
-A sophisticated web application leveraging AI to provide comprehensive stock market analysis, sentiment evaluation, and personalized investment recommendations.
+A sophisticated web application leveraging AI agent collaboration to provide comprehensive stock market analysis, sentiment evaluation, and personalized investment recommendations.
 
 ![Main View - Stock Analysis Dashboard](docs/images/main-view.png)
 *AI-powered stock analysis dashboard showcasing real-time market data, sentiment analysis, and intelligent investment recommendations*
@@ -13,7 +13,7 @@ A sophisticated web application leveraging AI to provide comprehensive stock mar
 - Company information and key financial statistics
 - Comprehensive financial metrics display
 
-### AI-Powered Intelligence
+### AI Agent Collaboration
 - **Sentiment Analysis Agent**
   - Processes real-time market data and news
   - Analyzes technical indicators and trends
@@ -22,10 +22,17 @@ A sophisticated web application leveraging AI to provide comprehensive stock mar
   - Provides comprehensive market context
 
 - **Investment Recommendation Agent**
-  - Generates personalized investment strategies
-  - Adapts to user's risk tolerance
+  - Generates personalized investment strategies based on sentiment analysis
+  - Adapts to user's risk tolerance and investment horizon
   - Provides actionable entry/exit points
   - Risk-adjusted portfolio suggestions
+  - Builds upon the insights from the Sentiment Analysis Agent
+
+- **Agent Collaboration Benefits**
+  - Multi-modal data processing across structured and unstructured sources
+  - Sequential and dependent processing for comprehensive analysis
+  - Complementary capabilities providing both objective analysis and personalized advice
+  - Modular architecture allowing for independent improvements
 
 ### Modern User Experience
 - Intuitive stock search with detailed results
@@ -214,10 +221,18 @@ CORS_ORIGINS=http://localhost:5173,http://localhost:3000
    - News impact analysis and correlation
 
 2. **Investment Recommendation Agent**
-   - Personalized strategy generation
+   - Personalized strategy generation based on sentiment analysis
    - Risk tolerance-based recommendations
    - Dynamic entry/exit point suggestions
    - Risk-adjusted return analysis
+   - Collaborative enhancement of sentiment analysis insights
+
+3. **Agent Collaboration Architecture**
+   - Data collection agents gather information from multiple sources
+   - Sentiment analysis agent processes and interprets the data
+   - Recommendation agent builds upon sentiment analysis with user preferences
+   - UI agents present information in an accessible, actionable format
+   - Sequential workflow with information sharing between agents
 
 ### User Interface
 - Clean, modern Material Design implementation
@@ -248,6 +263,34 @@ CORS_ORIGINS=http://localhost:5173,http://localhost:3000
 - CORS is configured for specific origins
 - Input validation on all user inputs
 - Secure HTTPS communication
+
+## 🤖 AI Agent Collaboration Implementation
+
+The application implements a sophisticated AI agent collaboration system:
+
+### Prompt Engineering
+- Carefully crafted prompts provide clear instructions to each AI agent
+- Structured data formatting ensures consistent information exchange between agents
+- Context sharing allows agents to build upon previous analyses
+- Response templates ensure consistent output formats
+
+### Agent Communication
+- JSON-structured data exchange between agents
+- Sequential processing with dependency management
+- Shared context for coherent analysis across agents
+- Error handling and fallback mechanisms
+
+### Azure OpenAI Integration
+- GPT-4o powers both sentiment analysis and investment recommendation agents
+- API parameters optimized for each agent's specific task
+- Temperature settings adjusted based on task requirements
+- Response parsing tailored to each agent's output format
+
+### Extensibility
+- Modular architecture allows for adding new specialized agents
+- Agent capabilities can be enhanced independently
+- New data sources can be integrated with minimal changes
+- System designed to scale with additional AI capabilities
 
 ## 🤝 Contributing
 
