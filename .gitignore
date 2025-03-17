@@ -1,68 +1,15 @@
 # Dependencies
 node_modules/
-venv/
-__pycache__/
-*.pyc
-.env
-
-# Build outputs
-dist/
-build/
-*.egg-info/
-
-# IDE and Editor files
-.idea/
-.vscode/
-*.swp
-*.swo
-.DS_Store
-
-# Logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Testing
-coverage/
-.coverage
-htmlcov/
-.pytest_cache/
-
-# Environment files
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# Azure Functions
-local.settings.json
-bin/
-obj/
 .python_packages/
-
-# Misc
-.DS_Store
-Thumbs.db
-
-# Environment variables
-.env
-.env.local
-.env.*.local
-.env.development
-.env.production
-
-# Python
+venv/
+.venv/
+env/
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
-env/
-build/
 develop-eggs/
-dist/
 downloads/
 eggs/
 .eggs/
@@ -75,56 +22,71 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-venv/
-.venv/
 
-# Node
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
+# Environment files
+.env
+.env.local
+.env.*.local
+.env.development
+.env.test
+.env.production
+local.settings.json
 
-# IDEs and editors
+# Build and distribution
+dist/
+dist-ssr/
+build/
+out/
+*.local
+
+# IDE and Editor files
 .idea/
-.vscode/
+.vscode/*
+!.vscode/extensions.json
 *.swp
 *.swo
-.DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# Build and dist
-/dist
-/build
-/out
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
 # Logs
-logs
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# Testing
-/coverage
-.nyc_output
+# Testing and Coverage
+coverage/
+.coverage
+htmlcov/
+.pytest_cache/
+.nyc_output/
 
-# Production
-/build
+# Azure Functions specific
+bin/
+obj/
+csx/
+.vs/
+edge/
+Publish/
+project.lock.json
+/packages
+/TestResults
+/tools/NuGet.exe
+/App_Data
+/secrets
+/data
+.secrets
+__blobstorage__
+__queuestorage__
+__azurite_db*__.json
 
-# Misc
+# OS specific
 .DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# New additions from the code block
-dist-ssr/
-*.local
-.env*.local
+Thumbs.db
 *.pem
-lerna-debug.log* .DS_Store
