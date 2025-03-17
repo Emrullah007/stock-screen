@@ -74,8 +74,6 @@ const theme = createTheme({
 });
 
 function App() {
-  const currentYear = new Date().getFullYear();
-  
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -85,21 +83,6 @@ function App() {
         minHeight: '100vh' 
       }}>
         <Home />
-        <Box 
-          component="footer" 
-          sx={{ 
-            py: 3, 
-            mt: 'auto', 
-            textAlign: 'center',
-            borderTop: '1px solid',
-            borderColor: 'divider',
-            backgroundColor: 'background.paper'
-          }}
-        >
-          <Typography variant="body2" color="text.secondary">
-            © {currentYear} AI-Powered Stock Analysis. Developed by Emrullah Celik
-          </Typography>
-        </Box>
       </div>
     </ThemeProvider>
   );

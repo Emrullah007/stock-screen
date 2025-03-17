@@ -176,8 +176,223 @@ const SentimentAnalysis = ({ data, onClose }) => {
           </Typography>
         </Box>
 
+        {/* Recent News Articles - Enhanced UI */}
+        <Accordion 
+          defaultExpanded={false}
+          sx={{
+            background: 'linear-gradient(145deg, rgba(25, 118, 210, 0.05) 0%, rgba(25, 118, 210, 0.1) 100%)',
+            borderRadius: '8px !important',
+            '&:before': {
+              display: 'none', // Remove the default divider
+            },
+            '& .MuiAccordionSummary-root': {
+              minHeight: 64,
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                background: 'linear-gradient(145deg, rgba(25, 118, 210, 0.1) 0%, rgba(25, 118, 210, 0.15) 100%)',
+              },
+            },
+            '& .MuiAccordionSummary-content': {
+              margin: '12px 0',
+            },
+            '& .MuiAccordionDetails-root': {
+              padding: 0,
+              background: 'white',
+              borderBottomLeftRadius: '8px',
+              borderBottomRightRadius: '8px',
+            },
+          }}
+        >
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon sx={{ 
+              fontSize: '1.5rem',
+              color: 'primary.main',
+              transition: 'transform 0.3s ease',
+              '&:hover': {
+                transform: 'scale(1.1)',
+              },
+            }} />}
+            sx={{ 
+              bgcolor: 'transparent',
+              borderRadius: 1
+            }}
+          >
+            <Box sx={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: 2,
+              width: '100%',
+              justifyContent: 'space-between'
+            }}>
+              <Box sx={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: 1.5 
+              }}>
+                <Typography 
+                  variant="h6" 
+                  sx={{ 
+                    fontSize: '1.1rem',
+                    fontWeight: 600,
+                    color: 'primary.main',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 1,
+                  }}
+                >
+                  📰 Recent News Articles
+                </Typography>
+                <Chip 
+                  label={`${data.articles.length} articles`}
+                  size="small"
+                  sx={{
+                    bgcolor: 'primary.main',
+                    color: 'white',
+                    fontWeight: 500,
+                    fontSize: '0.75rem',
+                  }}
+                />
+              </Box>
+              <Typography 
+                variant="caption" 
+                color="text.secondary"
+                sx={{ 
+                  display: { xs: 'none', sm: 'block' },
+                  fontStyle: 'italic'
+                }}
+              >
+                Click to view latest news and updates
+              </Typography>
+            </Box>
+          </AccordionSummary>
+          <AccordionDetails>
+            <List sx={{ 
+              width: '100%', 
+              bgcolor: 'background.paper',
+              py: 0,
+              '& .MuiListItem-root': {
+                transition: 'background-color 0.2s ease',
+                '&:hover': {
+                  bgcolor: 'rgba(25, 118, 210, 0.04)',
+                },
+              },
+            }}>
+              {data.articles.map((article, index) => (
+                <React.Fragment key={index}>
+                  <ListItem 
+                    alignItems="flex-start" 
+                    sx={{ 
+                      flexDirection: 'column',
+                      p: 2.5,
+                    }}
+                  >
+                    <ListItemText
+                      primary={
+                        <Box sx={{ 
+                          display: 'flex', 
+                          alignItems: 'flex-start', 
+                          gap: 1,
+                          mb: 1
+                        }}>
+                          <Typography
+                            component="a"
+                            href={article.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            sx={{
+                              color: 'primary.main',
+                              textDecoration: 'none',
+                              fontSize: '1rem',
+                              fontWeight: 500,
+                              flex: 1,
+                              '&:hover': {
+                                textDecoration: 'underline',
+                                color: 'primary.dark',
+                              },
+                            }}
+                          >
+                            {article.title}
+                          </Typography>
+                        </Box>
+                      }
+                      secondary={
+                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                          <Typography
+                            component="span"
+                            variant="body2"
+                            color="text.primary"
+                            sx={{
+                              lineHeight: 1.5,
+                              color: 'text.secondary',
+                            }}
+                          >
+                            {article.description}
+                          </Typography>
+                          <Box sx={{ 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            gap: 2,
+                            mt: 0.5
+                          }}>
+                            <Typography
+                              component="span"
+                              variant="caption"
+                              sx={{
+                                bgcolor: 'rgba(25, 118, 210, 0.08)',
+                                color: 'text.primary',
+                                fontWeight: 500,
+                                px: 1,
+                                py: 0.25,
+                                borderRadius: '4px',
+                                fontSize: '0.7rem',
+                                letterSpacing: '0.02em',
+                                textTransform: 'uppercase'
+                              }}
+                            >
+                              {article.source}
+                            </Typography>
+                            <Typography
+                              component="span"
+                              variant="caption"
+                              sx={{
+                                color: 'text.secondary',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 0.5,
+                                '&::before': {
+                                  content: '""',
+                                  width: '4px',
+                                  height: '4px',
+                                  borderRadius: '50%',
+                                  bgcolor: 'text.disabled',
+                                  display: 'inline-block'
+                                }
+                              }}
+                            >
+                              {new Date(article.publishedAt).toLocaleDateString(undefined, {
+                                year: 'numeric',
+                                month: 'short',
+                                day: 'numeric',
+                              })}
+                            </Typography>
+                          </Box>
+                        </Box>
+                      }
+                    />
+                  </ListItem>
+                  {index < data.articles.length - 1 && (
+                    <Divider component="li" sx={{ 
+                      borderColor: 'rgba(0, 0, 0, 0.08)',
+                    }} />
+                  )}
+                </React.Fragment>
+              ))}
+            </List>
+          </AccordionDetails>
+        </Accordion>
+
         {/* Market Metrics */}
-        <Box sx={{ mb: 4 }}>
+        <Box sx={{ mt: 4, mb: 4 }}>
           <Typography
             variant="h6"
             sx={{
@@ -265,71 +480,6 @@ const SentimentAnalysis = ({ data, onClose }) => {
             </ReactMarkdown>
           </Paper>
         )}
-
-        {/* News Articles */}
-        <Accordion defaultExpanded={!data.sentiment_analysis}>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            sx={{ 
-              bgcolor: 'background.default',
-              borderRadius: 1
-            }}
-          >
-            <Typography variant="h6" sx={{ fontSize: '1rem' }}>
-              📰 Recent News Articles
-            </Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
-              {data.articles.map((article, index) => (
-                <React.Fragment key={index}>
-                  <ListItem alignItems="flex-start" sx={{ flexDirection: 'column' }}>
-                    <ListItemText
-                      primary={
-                        <Typography
-                          component="a"
-                          href={article.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          sx={{
-                            color: 'primary.main',
-                            textDecoration: 'none',
-                            '&:hover': {
-                              textDecoration: 'underline',
-                            },
-                          }}
-                        >
-                          {article.title}
-                        </Typography>
-                      }
-                      secondary={
-                        <React.Fragment>
-                          <Typography
-                            sx={{ display: 'inline' }}
-                            component="span"
-                            variant="body2"
-                            color="text.primary"
-                          >
-                            {article.description}
-                          </Typography>
-                          <Typography
-                            component="p"
-                            variant="caption"
-                            color="text.secondary"
-                            sx={{ mt: 1 }}
-                          >
-                            Source: {article.source} - {new Date(article.publishedAt).toLocaleDateString()}
-                          </Typography>
-                        </React.Fragment>
-                      }
-                    />
-                  </ListItem>
-                  {index < data.articles.length - 1 && <Divider component="li" />}
-                </React.Fragment>
-              ))}
-            </List>
-          </AccordionDetails>
-        </Accordion>
 
         <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
           <Typography variant="caption" color="text.secondary">
