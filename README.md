@@ -2,7 +2,7 @@
 
 A sophisticated web application leveraging AI agent collaboration to provide comprehensive stock market analysis, sentiment evaluation, and personalized investment recommendations.
 
-![Main View - Stock Analysis Dashboard](docs/images/main-view.png)
+![Main View - Stock Analysis Dashboard](docs/images/main-view.png?v=2)
 *AI-powered stock analysis dashboard showcasing real-time market data, sentiment analysis, and intelligent investment recommendations*
 
 ## 🌟 Key Features
