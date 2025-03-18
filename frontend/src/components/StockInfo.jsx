@@ -3,6 +3,12 @@ import { Box, Typography, Paper, Chip, Grid, Slide, Fade, useTheme, useMediaQuer
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
+/**
+ * Formats market capitalization to a human-readable format
+ * Converts large numbers to T (trillion) or B (billion) format
+ * @param {number} value - Market cap value in raw format
+ * @returns {string} Formatted market cap (e.g., $2.5T, $750.4B)
+ */
 const formatMarketCap = (value) => {
   if (!value) return 'N/A';
   const trillion = 1e12;
@@ -16,16 +22,23 @@ const formatMarketCap = (value) => {
   return `$${value.toLocaleString()}`;
 };
 
+/**
+ * Formats dividend yield to percentage format with 2 decimal places
+ * @param {number} value - Dividend yield as a decimal (e.g., 0.0265)
+ * @returns {string} Formatted percentage (e.g., "2.65%")
+ */
 const formatDividendYield = (value) => {
-  // Debug logging
-  console.log('Raw dividend yield:', value);
-  
   if (!value || value === 0) return 'N/A';
   
-  // Value is already a percentage, just format it
-  return `${Number(value).toFixed(2)}%`;
+  // Value is already a decimal, convert to percentage
+  return `${(value * 100).toFixed(2)}%`;
 };
 
+/**
+ * Calculates 52-week high and low from historical data
+ * @param {Array} historicalData - Array of historical price data points
+ * @returns {Object} Object containing low and high price for the last year
+ */
 const calculate52WeekRange = (historicalData) => {
   if (!historicalData || historicalData.length === 0) return { low: null, high: null };
   
@@ -38,6 +51,10 @@ const calculate52WeekRange = (historicalData) => {
   return { low, high };
 };
 
+/**
+ * StockInfo Component - Displays key information about a stock
+ * Shows current price, price change, market cap, and other financial metrics
+ */
 const StockInfo = ({ stockInfo, historicalData }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -58,7 +75,10 @@ const StockInfo = ({ stockInfo, historicalData }) => {
   const info = stockInfo.info;
   const { low: yearLow, high: yearHigh } = calculate52WeekRange(historicalData);
   
-  // Calculate current price position in 52-week range
+  /**
+   * Calculates where the current price sits within the 52-week range
+   * @returns {number} Percentage position in the range (0-100%)
+   */
   const calculateRangePercentage = () => {
     if (!yearLow || !yearHigh || yearLow === yearHigh) return 50;
     const range = yearHigh - yearLow;
@@ -68,10 +88,6 @@ const StockInfo = ({ stockInfo, historicalData }) => {
   
   const rangePercentage = calculateRangePercentage();
   
-  // Debug logging
-  console.log('Stock Info:', info);
-  console.log('Dividend Yield from API:', info.dividend_yield);
-
   return (
     <Box sx={{ 
       overflow: 'hidden',

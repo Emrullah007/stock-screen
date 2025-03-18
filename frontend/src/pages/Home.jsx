@@ -18,7 +18,11 @@ import ShowChartIcon from '@mui/icons-material/ShowChart';
 import SearchIcon from '@mui/icons-material/Search';
 import { getStockInfo, getHistoricalData, getStockSentiment } from '../services/api';
 
-// Add global styles for handling search results
+/**
+ * Global styles for search-related UI elements
+ * These styles ensure the search container and results are properly displayed
+ * and handle special cases like hiding the search title when results are open
+ */
 const GlobalStyles = () => {
   return (
     <style jsx global>{`
@@ -44,32 +48,54 @@ const GlobalStyles = () => {
   );
 };
 
+/**
+ * Home Component - Main application container
+ * 
+ * Orchestrates the entire application flow including:
+ * - Stock search and data retrieval
+ * - Display of stock information and charts
+ * - AI-powered sentiment analysis
+ * - Investment recommendations
+ * - Section navigation
+ */
 const Home = () => {
+  // State for stock data
   const [stockInfo, setStockInfo] = useState(null);
   const [historicalData, setHistoricalData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  
+  // State for AI analysis
   const [sentimentData, setSentimentData] = useState(null);
   const [showSentiment, setShowSentiment] = useState(false);
   const [sentimentLoading, setSentimentLoading] = useState(false);
   const [shouldScrollToInfo, setShouldScrollToInfo] = useState(false);
   
-  // Section references
+  // Section references for scrolling and navigation
   const infoSectionRef = useRef(null);
   const chartSectionRef = useRef(null);
   const sentimentSectionRef = useRef(null);
   const recommendationsSectionRef = useRef(null);
   
+  // Navigation context for section tracking
   const { activeSection, sections, navigateToSection } = useNavigation();
   
   // Disable scroll snapping to prevent conflicts with manual navigation
   useScrollSnap({ enabled: false });
 
+  /**
+   * Clears all analysis data when switching stocks
+   */
   const clearAnalyses = () => {
     setSentimentData(null);
     setShowSentiment(false);
   };
 
+  /**
+   * Handles stock selection and data fetching
+   * Retrieves both basic stock info and historical price data
+   * @param {string} symbol - Stock symbol (e.g., 'AAPL')
+   */
   const handleStockSelect = async (symbol) => {
     setLoading(true);
     setError(null);
@@ -79,6 +105,7 @@ const Home = () => {
     setHistoricalData([]); // Clear historical data
 
     try {
+      // Fetch stock info and historical data in parallel
       const [info, historyResponse] = await Promise.all([
         getStockInfo(symbol),
         getHistoricalData(symbol)
@@ -102,6 +129,11 @@ const Home = () => {
     }
   };
 
+  /**
+   * Initiates AI sentiment analysis for the selected stock
+   * Fetches analysis data from backend and scrolls to the results when ready
+   * @param {string} symbol - Stock symbol to analyze
+   */
   const handleSentimentAnalysis = async (symbol) => {
     setSentimentLoading(true);
     setError(null);
@@ -131,7 +163,10 @@ const Home = () => {
     }
   };
 
-  // Add effect to scroll to info section when data is loaded
+  /**
+   * Effect to handle scrolling to stock info section after data is loaded
+   * Implements multiple scroll strategies for better cross-device compatibility
+   */
   useEffect(() => {
     if (shouldScrollToInfo && stockInfo && infoSectionRef.current) {
       // Wait for the component to be fully rendered
@@ -702,10 +737,17 @@ const Home = () => {
             >
               © {new Date().getFullYear()} AI-Powered Stock Analysis. Developed by{' '}
               <Box
-                component="span"
+                component="a"
+                href="https://www.linkedin.com/in/emrullahcelik/"
+                target="_blank"
+                rel="noopener noreferrer"
                 sx={{
                   color: 'primary.main',
-                  fontWeight: 600
+                  fontWeight: 600,
+                  textDecoration: 'none',
+                  '&:hover': {
+                    textDecoration: 'underline'
+                  }
                 }}
               >
                 Emrullah Celik

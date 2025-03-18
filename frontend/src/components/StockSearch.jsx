@@ -27,6 +27,16 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { searchStocks } from '../services/api';
 
+/**
+ * StockSearch Component
+ * 
+ * Provides a search interface for finding stocks by symbol.
+ * Handles search input, results display, error states, and stock selection.
+ * Positioned as a fixed element that adapts to screen positioning.
+ * 
+ * @param {Object} props - Component props
+ * @param {Function} props.onSelect - Callback when a stock is selected
+ */
 const StockSearch = ({ onSelect }) => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
@@ -36,6 +46,10 @@ const StockSearch = ({ onSelect }) => {
   const searchRef = useRef(null);
   const [resultsPosition, setResultsPosition] = useState({ top: 0, left: 0, width: 0 });
 
+  /**
+   * Updates the position of search results based on the search input's position
+   * Ensures results appear directly below the search input regardless of scrolling
+   */
   const updateResultsPosition = () => {
     if (searchRef.current) {
       const rect = searchRef.current.getBoundingClientRect();
@@ -47,7 +61,10 @@ const StockSearch = ({ onSelect }) => {
     }
   };
 
-  // Update position when search results are shown
+  /**
+   * Add/remove window event listeners for positioning the search results
+   * Updates position when window is resized or page is scrolled
+   */
   useEffect(() => {
     if (isSearching && results.length > 0) {
       updateResultsPosition();
@@ -62,7 +79,9 @@ const StockSearch = ({ onSelect }) => {
     };
   }, [isSearching, results]);
 
-  // Force update position after component mounts
+  /**
+   * Initial positioning of search results after component mount
+   */
   useEffect(() => {
     // Small delay to ensure the DOM is fully rendered
     const timer = setTimeout(() => {
@@ -71,6 +90,10 @@ const StockSearch = ({ onSelect }) => {
     return () => clearTimeout(timer);
   }, []);
 
+  /**
+   * Handles the search action when user submits query
+   * Fetches stock data and updates results or displays errors
+   */
   const handleSearch = async () => {
     if (!query.trim()) {
       setResults([]);
@@ -101,6 +124,10 @@ const StockSearch = ({ onSelect }) => {
     }
   };
 
+  /**
+   * Handles changes to the search input field
+   * Clears results when input is empty
+   */
   const handleInputChange = (event) => {
     const value = event.target.value;
     setQuery(value);
@@ -111,12 +138,23 @@ const StockSearch = ({ onSelect }) => {
     }
   };
 
+  /**
+   * Handles keyboard events for the search input
+   * Triggers search when Enter key is pressed
+   */
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
       handleSearch();
     }
   };
 
+  /**
+   * Handles stock selection from search results
+   * Clears search state and calls the parent's onSelect callback
+   * Implements additional scrolling logic for better mobile experience
+   * 
+   * @param {string} symbol - The selected stock symbol
+   */
   const handleStockSelect = (symbol) => {
     setIsSearching(false);
     setQuery('');
@@ -126,7 +164,7 @@ const StockSearch = ({ onSelect }) => {
     if (onSelect) {
       onSelect(symbol); // The improved mobile scroll logic will be handled in Home.jsx
       
-      // Add additional scroll trigger after a longer delay
+      // Add additional scroll trigger after a longer delay as a fallback
       setTimeout(() => {
         // Find the Stock Information section and scroll to it as a backup
         const infoSection = document.getElementById('stock-info');
@@ -142,12 +180,20 @@ const StockSearch = ({ onSelect }) => {
     }
   };
 
+  /**
+   * Handles closing the search results
+   * Resets all search-related state
+   */
   const handleCloseResults = () => {
     setResults([]);
     setError(null);
     setIsSearching(false);
   };
 
+  /**
+   * Handles clicks outside the search component
+   * Closes search results when user clicks away
+   */
   const handleClickAway = () => {
     if (isSearching) {
       setIsSearching(false);

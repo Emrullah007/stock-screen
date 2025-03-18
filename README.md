@@ -386,7 +386,7 @@ For support and troubleshooting:
 
 ---
 
-© 2025 AI-Powered Stock Analysis. Developed by Emrullah Celik
+© 2025 AI-Powered Stock Analysis. Developed by [Emrullah Celik](https://www.linkedin.com/in/emrullahcelik/)
 
 Built with:
 - Frontend: React, Vite, Material-UI, Chart.js

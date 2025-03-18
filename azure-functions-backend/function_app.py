@@ -22,7 +22,16 @@ app = func.FunctionApp()
 _openai = None
 
 def get_openai() -> AzureOpenAI:
-    """Initialize Azure OpenAI client"""
+    """
+    Initialize and return an Azure OpenAI client
+    
+    Uses environment variables for API key and endpoint.
+    The client is lazily initialized to avoid unnecessary connection
+    setup for endpoints that don't require AI capabilities.
+    
+    Returns:
+        AzureOpenAI: Configured Azure OpenAI client instance
+    """
     return AzureOpenAI(
         api_key=os.environ.get('AZURE_API_KEY'),
         azure_endpoint=os.environ.get('AZURE_ENDPOINT'),
@@ -30,14 +39,33 @@ def get_openai() -> AzureOpenAI:
     )
 
 def get_newsapi():
-    """Initialize News API configuration"""
+    """
+    Initialize News API configuration
+    
+    Retrieves API key from environment variables and provides
+    the base URL for News API requests.
+    
+    Returns:
+        dict: Configuration with api_key and base_url
+    """
     return {
         'api_key': os.environ.get('NEWS_API_KEY'),
         'base_url': 'https://newsapi.org/v2'
     }
 
 def add_cors_headers(resp: func.HttpResponse) -> func.HttpResponse:
-    """Add CORS headers to the response"""
+    """
+    Add CORS headers to enable cross-origin requests
+    
+    This function decorates HTTP responses with the necessary headers
+    to allow the frontend application to make requests to this API.
+    
+    Args:
+        resp (func.HttpResponse): The response object to modify
+    
+    Returns:
+        func.HttpResponse: Response with CORS headers added
+    """
     resp.headers['Access-Control-Allow-Origin'] = '*'
     resp.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
     resp.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, Accept'
@@ -45,7 +73,21 @@ def add_cors_headers(resp: func.HttpResponse) -> func.HttpResponse:
     return resp
 
 def get_stock_data(symbol: str):
-    """Get stock data from Yahoo Finance."""
+    """
+    Retrieve comprehensive stock data from Yahoo Finance
+    
+    Fetches current price, company information, financial metrics,
+    and other relevant data for the specified stock symbol.
+    
+    Args:
+        symbol (str): Stock ticker symbol (e.g., 'AAPL')
+    
+    Returns:
+        dict: Formatted stock data including price, metrics and company info
+    
+    Raises:
+        Exception: If the symbol is invalid or data couldn't be retrieved
+    """
     try:
         ticker = yf.Ticker(symbol)
         info = ticker.info
@@ -83,7 +125,23 @@ def get_stock_data(symbol: str):
         raise
 
 def get_stock_history(symbol: str, period: str = "1mo"):
-    """Get historical stock data from Yahoo Finance."""
+    """
+    Retrieve historical stock price data for charting
+    
+    Fetches OHLC (Open, High, Low, Close) data for the specified
+    time period to enable price chart visualization.
+    
+    Args:
+        symbol (str): Stock ticker symbol
+        period (str, optional): Time period for historical data. Defaults to "1mo".
+                               Options include: 1d, 5d, 1mo, 3mo, 6mo, 1y, 2y, 5y, 10y, ytd, max
+    
+    Returns:
+        list: Time series of historical price data points with OHLC values
+    
+    Raises:
+        Exception: If historical data couldn't be retrieved
+    """
     try:
         ticker = yf.Ticker(symbol)
         history = ticker.history(period=period)
@@ -109,6 +167,18 @@ def get_stock_history(symbol: str, period: str = "1mo"):
 
 @app.route(route="GetStockData", auth_level=func.AuthLevel.ANONYMOUS)
 def GetStockData(req: func.HttpRequest) -> func.HttpResponse:
+    """
+    API endpoint to get current stock data
+    
+    Retrieves current price, company information, and financial metrics
+    for a specified stock symbol.
+    
+    Query Parameters:
+        symbol (str): Stock ticker symbol (required)
+    
+    Returns:
+        HTTP Response with JSON payload containing stock information
+    """
     try:
         symbol = req.params.get('symbol')
         if not symbol:
@@ -119,6 +189,7 @@ def GetStockData(req: func.HttpRequest) -> func.HttpResponse:
             ))
         
         result = get_stock_data(symbol)
+        # Filter out empty/zero values for cleaner response
         result = {k: v for k, v in result.items() if v not in (None, 0, "")}
         
         return add_cors_headers(func.HttpResponse(
@@ -127,6 +198,7 @@ def GetStockData(req: func.HttpRequest) -> func.HttpResponse:
         ))
     except Exception as e:
         error_msg = str(e)
+        # Determine if this is a 'symbol not found' error or a server error
         status_code = 500 if "No data found for symbol" not in error_msg else 400
         return add_cors_headers(func.HttpResponse(
             json.dumps({
@@ -140,6 +212,19 @@ def GetStockData(req: func.HttpRequest) -> func.HttpResponse:
 
 @app.route(route="GetStockHistory", auth_level=func.AuthLevel.ANONYMOUS)
 def GetStockHistory(req: func.HttpRequest) -> func.HttpResponse:
+    """
+    API endpoint to get historical stock price data
+    
+    Retrieves time series of price data for charting and analysis.
+    
+    Query Parameters:
+        symbol (str): Stock ticker symbol (required)
+        period (str): Time period for historical data (default: '1y')
+                     Options: 1d, 5d, 1mo, 3mo, 6mo, 1y, 2y, 5y, 10y, ytd, max
+    
+    Returns:
+        HTTP Response with JSON payload containing historical price data
+    """
     try:
         symbol = req.params.get('symbol')
         period = req.params.get('period', '1y')

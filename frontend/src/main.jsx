@@ -9,11 +9,23 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   </React.StrictMode>
 );
 
-// Add a script to detect and hide any blue elements at the top
+/**
+ * UI Fix Script
+ * 
+ * This script detects and hides any unwanted blue header elements that might be 
+ * introduced by the embedding environment. It runs after the DOM is fully loaded
+ * and searches for elements with blue backgrounds that appear at the top of the page.
+ * 
+ * This ensures the application UI remains clean and consistent across different environments.
+ */
 window.addEventListener('DOMContentLoaded', () => {
   // Small delay to ensure all elements are rendered
   setTimeout(() => {
-    // Helper function to check if an element is blue
+    /**
+     * Determines if an element has a blue background and is positioned at the top of the page
+     * @param {HTMLElement} element - DOM element to check
+     * @returns {boolean} - True if element is blue and at the top
+     */
     const isBlueElement = (element) => {
       if (!element) return false;
       
@@ -42,7 +54,7 @@ window.addEventListener('DOMContentLoaded', () => {
     // Hide any blue elements at the top
     allElements.forEach(element => {
       if (isBlueElement(element)) {
-        console.log('Hiding blue element:', element);
+        // Hide the element
         element.style.display = 'none';
       }
     });
