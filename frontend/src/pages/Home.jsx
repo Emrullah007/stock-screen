@@ -94,29 +94,32 @@ const Home = () => {
           backgroundColor: 'rgba(255, 255, 255, 0.95)',
           borderBottom: '1px solid',
           borderColor: 'divider',
-          py: { xs: 1.5, sm: 2 },
-          mb: { xs: 2, sm: 3 },
+          py: { xs: 1, sm: 1.5, md: 2 },
+          mb: { xs: 1.5, sm: 2, md: 3 },
+          width: '100%',
         }}
       >
         <Container maxWidth="xl" sx={{ 
-          px: { xs: 2, sm: 3 },
-          maxWidth: { xl: '1600px' },
+          px: { xs: 1, sm: 2, md: 3 },
+          maxWidth: { sm: '100%', md: '1200px', lg: '1400px' },
+          mx: 'auto',
+          width: '100%',
         }}>
           <Box sx={{ 
-            textAlign: { xs: 'center', sm: 'left' } 
+            textAlign: 'center'
           }}>
             <Typography 
               variant="h4" 
               component="h1" 
               sx={{ 
-                mb: 0.5,
+                mb: { xs: 0.25, sm: 0.5 },
                 fontWeight: 600,
-                fontSize: { xs: '1.5rem', sm: '1.8rem' },
+                fontSize: { xs: '1.25rem', sm: '1.5rem', md: '1.8rem' },
                 display: 'flex',
                 alignItems: 'center',
-                gap: 1,
+                gap: { xs: 0.5, sm: 1 },
                 color: 'primary.main',
-                justifyContent: { xs: 'center', sm: 'flex-start' }
+                justifyContent: 'center'
               }}
             >
               <AutoAwesomeIcon 
@@ -377,201 +380,185 @@ const Home = () => {
           )}
 
           {stockInfo && (
-            <Grid container spacing={{ xs: 1, sm: 2, md: 3 }} sx={{ width: '100%', m: 0 }}>
-              <Grid item xs={12} md={5} lg={4} sx={{ p: { xs: 1, sm: 2 } }}>
+            <Grid container spacing={{ xs: 1, sm: 2, md: 3 }} sx={{ 
+              width: '100%', 
+              m: 0, 
+              justifyContent: 'center',
+              maxWidth: '1200px',
+              mx: 'auto'
+            }}>
+              {/* Left Column - Stock Info */}
+              <Grid item xs={12} md={4} lg={4} sx={{ p: { xs: 0.5, sm: 1, md: 2 } }}>
                 <Box sx={{ 
                   display: 'flex', 
                   flexDirection: 'column', 
-                  gap: { xs: 1, sm: 2, md: 3 },
-                  position: 'sticky',
-                  top: { xs: 72, sm: 80 },
+                  gap: { xs: 1, sm: 1.5, md: 2 },
+                  position: { xs: 'static', md: 'sticky' },
+                  top: { xs: 'auto', md: '80px' },
                   zIndex: 5,
-                  pt: 1,
-                  height: 'fit-content',
-                  maxHeight: { 
-                    xs: 'auto',
-                    sm: 'auto', 
-                    md: 'calc(100vh - 100px)' 
-                  },
-                  '& > *': {
-                    flex: 'none' // Prevent children from growing
-                  }
+                  pt: { xs: 0.5, md: 1 },
+                  height: 'fit-content'
                 }}>
-                  {/* Stock Info Card - Compact version */}
-                  <Box sx={{
-                    maxHeight: { md: '45vh' },
-                    overflowY: 'auto',
-                    overflowX: 'hidden',
-                    '&::-webkit-scrollbar': {
-                      width: '8px',
-                      display: { xs: 'none', sm: 'block' }
-                    },
-                    '&::-webkit-scrollbar-track': {
-                      background: 'transparent',
-                    },
-                    '&::-webkit-scrollbar-thumb': {
-                      background: 'rgba(0, 0, 0, 0.1)',
-                      borderRadius: '4px',
-                    },
-                    '&::-webkit-scrollbar-thumb:hover': {
-                      background: 'rgba(0, 0, 0, 0.2)',
-                    }
-                  }}>
-                    <StockInfo 
-                      stockInfo={stockInfo}
-                      historicalData={historicalData}
-                    />
-                  </Box>
-
-                  {/* AI Investment Recommendations - Compact version */}
-                  <Box sx={{ 
-                    transition: 'all 0.3s ease',
-                    transform: sentimentData ? 'scale(1.02)' : 'scale(1)',
-                    boxShadow: sentimentData ? '0 4px 12px rgba(0,0,0,0.1)' : 'none',
-                    width: '100%',
-                    maxHeight: { md: '45vh' },
-                    overflowY: 'auto',
-                    overflowX: 'hidden',
-                    '&::-webkit-scrollbar': {
-                      width: '8px',
-                      display: { xs: 'none', sm: 'block' }
-                    },
-                    '&::-webkit-scrollbar-track': {
-                      background: 'transparent',
-                    },
-                    '&::-webkit-scrollbar-thumb': {
-                      background: 'rgba(0, 0, 0, 0.1)',
-                      borderRadius: '4px',
-                    },
-                    '&::-webkit-scrollbar-thumb:hover': {
-                      background: 'rgba(0, 0, 0, 0.2)',
-                    },
-                    // Add a subtle background when scrollable
-                    '&:hover': {
-                      backgroundColor: 'rgba(0, 0, 0, 0.01)',
-                    }
-                  }}>
-                    <AIRecommendations 
-                      symbol={stockInfo.symbol} 
-                      sentimentData={sentimentData}
-                      onGenerateSentiment={() => handleSentimentAnalysis(stockInfo.symbol)}
-                    />
-                  </Box>
-                </Box>
-              </Grid>
-              <Grid item xs={12} md={7} lg={8} sx={{ p: { xs: 1, sm: 2 } }}>
-                <Box sx={{ 
-                  display: 'flex', 
-                  flexDirection: 'column', 
-                  gap: { xs: 1, sm: 2, md: 3 },
-                  width: '100%',
-                }}>
+                  {/* Stock Info Card */}
+                  <StockInfo 
+                    stockInfo={stockInfo}
+                    historicalData={historicalData}
+                  />
+                  
+                  {/* Sentiment Analysis Prompt - when sentiment data doesn't exist */}
                   {!sentimentData && (
                     <Box sx={{
                       display: 'flex',
                       flexDirection: 'column',
-                      alignItems: { xs: 'center', sm: 'flex-start' },
-                      gap: 2,
-                      mb: { xs: 2, sm: 3 },
+                      alignItems: 'center',
+                      gap: { xs: 1, sm: 1.5 },
+                      mb: { xs: 1.5, sm: 2 },
                       width: '100%',
                       backgroundColor: 'rgba(33, 150, 243, 0.02)',
                       borderRadius: 2,
-                      p: 2,
+                      p: { xs: 1, sm: 1.5 },
                       border: '1px dashed',
                       borderColor: 'primary.light',
                     }}>
                       <Box sx={{
                         display: 'flex',
                         flexDirection: 'column',
-                        gap: 1,
+                        gap: 0.5,
                         width: '100%',
+                        textAlign: 'center'
                       }}>
                         <Typography
-                          variant="h6"
+                          variant="subtitle1" 
                           sx={{
-                            fontSize: { xs: '1rem', sm: '1.1rem' },
+                            fontSize: { xs: '0.9rem', sm: '0.95rem' },
                             fontWeight: 600,
                             color: 'primary.main',
                             display: 'flex',
                             alignItems: 'center',
-                            gap: 1,
+                            justifyContent: 'center',
+                            gap: 0.5,
                           }}
                         >
-                          <AutoAwesomeIcon sx={{ fontSize: '1.2rem' }} />
+                          <AutoAwesomeIcon sx={{ fontSize: { xs: '0.9rem', sm: '1rem' } }} />
                           Ready to Start Your Analysis?
                         </Typography>
                         <Typography
                           variant="body2"
                           sx={{
                             color: 'text.secondary',
-                            fontSize: { xs: '0.875rem', sm: '0.95rem' },
-                            maxWidth: '600px',
+                            fontSize: { xs: '0.75rem', sm: '0.8rem' },
+                            lineHeight: 1.4,
+                            mb: { xs: 0.5, sm: 1 }
                           }}
                         >
-                          Begin by clicking the button below to activate our AI Sentiment Analysis. Our advanced AI will analyze recent news, market trends, and technical indicators to provide you with comprehensive insights about {stockInfo?.info?.name || 'this stock'}.
+                          Activate AI Sentiment Analysis for {stockInfo?.info?.name}
                         </Typography>
                       </Box>
 
                       <Button
                         variant="contained"
-                        size="large"
+                        size="small"
                         onClick={() => handleSentimentAnalysis(stockInfo.symbol)}
                         sx={{ 
-                          fontSize: { xs: '0.875rem', sm: '0.95rem' },
-                          height: { xs: '40px', sm: '48px' },
-                          width: { xs: '100%', sm: 'auto' },
-                          minWidth: { xs: '200px', sm: '250px' },
-                          maxWidth: '100%',
+                          fontSize: { xs: '0.75rem', sm: '0.8rem' },
                           textTransform: 'none',
-                          borderRadius: '24px',
+                          borderRadius: '20px',
                           background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
-                          boxShadow: '0 3px 5px 2px rgba(33, 203, 243, .3)',
-                          letterSpacing: '0.5px',
+                          boxShadow: '0 2px 4px rgba(33, 203, 243, .3)',
+                          py: { xs: 0.25, sm: 0.5 },
+                          px: { xs: 1.5, sm: 2 },
+                          width: { xs: '95%', sm: '90%' },
                           fontWeight: 500,
                           display: 'flex',
                           alignItems: 'center',
-                          gap: 1,
-                          transition: 'all 0.3s ease',
-                          '&:hover': {
-                            background: 'linear-gradient(45deg, #1976D2 30%, #00BCD4 90%)',
-                            boxShadow: '0 4px 6px 2px rgba(33, 203, 243, .4)',
-                            transform: 'translateY(-1px)',
-                          },
-                          '&:active': {
-                            transform: 'translateY(1px)',
-                          }
+                          justifyContent: 'center',
+                          gap: 0.5,
                         }}
                       >
                         <Box sx={{ 
                           display: 'flex', 
                           alignItems: 'center',
-                          gap: 1,
+                          gap: 0.5,
                           '& .MuiSvgIcon-root': {
-                            fontSize: '1.2rem'
+                            fontSize: '0.9rem'
                           }
                         }}>
-                          <AutoAwesomeIcon />
                           <TrendingUpIcon />
                           AI News Sentiment Analysis
                         </Box>
                       </Button>
                     </Box>
                   )}
+                  
+                  {/* AI Recommendations - Always visible with stock info */}
+                  <Box sx={{ 
+                    width: '100%',
+                    position: 'relative',
+                    zIndex: 1
+                  }}>
+                    <AIRecommendations
+                      symbol={stockInfo.symbol}
+                      sentimentData={sentimentData}
+                      onGenerateSentiment={() => {
+                        if (!sentimentData) {
+                          handleSentimentAnalysis(stockInfo.symbol);
+                        } else {
+                          setShowSentiment(true);
+                        }
+                      }}
+                    />
+                  </Box>
+                </Box>
+              </Grid>
 
-                  <Box sx={{ width: '100%', overflow: 'hidden' }}>
+              {/* Right Column - Chart and Analysis */}
+              <Grid item xs={12} md={8} lg={8} sx={{ p: { xs: 0.5, sm: 1, md: 2 } }}>
+                <Box sx={{ 
+                  display: 'flex', 
+                  flexDirection: 'column', 
+                  gap: { xs: 1.5, sm: 2, md: 3 },
+                  width: '100%',
+                  maxWidth: '900px',
+                  mx: 'auto'
+                }}>
+                  {/* Stock Chart */}
+                  <Box sx={{ 
+                    width: '100%', 
+                    overflow: 'hidden',
+                    mb: { xs: 1.5, sm: 2, md: 3 },
+                    borderRadius: 2,
+                    boxShadow: '0 2px 12px rgba(0, 0, 0, 0.05)',
+                    border: '1px solid rgba(0, 0, 0, 0.08)',
+                    bgcolor: '#FFFFFF',
+                    p: { xs: 1, sm: 1.5, md: 2 }
+                  }}>
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        fontSize: { xs: '0.9rem', sm: '1rem' },
+                        fontWeight: 600,
+                        mb: { xs: 1, sm: 2 },
+                        color: 'text.primary',
+                        textAlign: 'center'
+                      }}
+                    >
+                      {stockInfo?.info?.name} Stock Price Chart
+                    </Typography>
                     <StockChart 
                       data={historicalData} 
                       stockName={stockInfo?.info?.name}
                     />
                   </Box>
-                  {showSentiment && sentimentData && (
+
+                  {/* Analysis Results Section - Conditional */}
+                  {sentimentData && showSentiment && (
                     <Box 
                       ref={sentimentRef} 
                       sx={{ 
                         scrollMargin: { xs: '16px', sm: '20px' },
-                        transition: 'all 0.3s ease-in-out',
                         width: '100%',
-                        overflow: 'hidden',
+                        maxWidth: '100%',
+                        overflowX: 'hidden'
                       }}
                     >
                       <SentimentAnalysis 
@@ -595,8 +582,8 @@ const Home = () => {
       {/* Disclaimer Section - Regular (not sticky) */}
       <Box sx={{
         mt: 'auto',
-        pt: 2,
-        pb: 2,
+        pt: { xs: 1.5, sm: 2 },
+        pb: { xs: 1.5, sm: 2 },
         px: { xs: 1, sm: 2, md: 3 },
         bgcolor: 'background.default',
         width: '100%',
@@ -670,8 +657,9 @@ const Home = () => {
           backgroundColor: 'rgba(255, 255, 255, 0.95)',
           borderTop: '1px solid',
           borderColor: 'divider',
-          py: { xs: 1, sm: 1.5 },
+          py: { xs: 0.75, sm: 1, md: 1.5 },
           width: '100%',
+          textAlign: 'center'
         }}
       >
         <Container maxWidth="xl" sx={{ 

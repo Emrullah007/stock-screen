@@ -183,9 +183,10 @@ const StockSearch = ({ onSelect }) => {
               maxHeight: 300,
               overflow: 'auto',
               borderRadius: 2,
-              bgcolor: 'background.paper',
-              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+              bgcolor: '#FFFFFF',
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
               position: 'relative',
+              border: '1px solid rgba(0, 0, 0, 0.08)'
             }}
           >
             <Box sx={{ 
@@ -195,7 +196,7 @@ const StockSearch = ({ onSelect }) => {
               zIndex: 1,
               display: 'flex',
               justifyContent: 'flex-end',
-              bgcolor: 'background.paper',
+              bgcolor: '#FFFFFF',
               borderBottom: '1px solid',
               borderColor: 'divider',
               px: 1,
@@ -214,17 +215,16 @@ const StockSearch = ({ onSelect }) => {
                 <CloseIcon fontSize="small" />
               </IconButton>
             </Box>
-            <List>
+            <List sx={{ py: 0 }}>
               {results.map((stock) => (
                 <ListItem key={stock.symbol} disablePadding>
                   <ListItemButton 
                     onClick={() => handleStockSelect(stock)}
                     sx={{
-                      '&:hover': {
-                        bgcolor: 'rgba(33, 150, 243, 0.08)',
-                      },
                       py: 1.5,
-                      transition: 'all 0.2s ease',
+                      '&:hover': {
+                        bgcolor: 'rgba(33, 150, 243, 0.05)',
+                      }
                     }}
                   >
                     <Box sx={{ width: '100%' }}>
@@ -235,21 +235,23 @@ const StockSearch = ({ onSelect }) => {
                         mb: 1 
                       }}>
                         <Typography 
-                          variant="subtitle1" 
+                          variant="body1" 
                           sx={{ 
                             fontWeight: 500,
-                            color: 'text.primary',
-                            fontSize: '0.95rem'
+                            fontSize: '0.95rem',
+                            color: '#2C3E50',
+                            fontFamily: '"Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
                           }}
                         >
                           {stock.info.name} ({stock.symbol})
                         </Typography>
                         <Typography 
-                          variant="subtitle1" 
+                          variant="body1" 
                           sx={{
                             color: 'primary.main',
                             fontWeight: 600,
-                            fontSize: '0.95rem'
+                            fontSize: '0.95rem',
+                            fontFamily: '"Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
                           }}
                         >
                           ${stock.info.current_price}
@@ -258,35 +260,63 @@ const StockSearch = ({ onSelect }) => {
 
                       <Grid container spacing={2} sx={{ mb: 0.5 }}>
                         <Grid item xs={4}>
-                          <Typography variant="caption" color="text.secondary" display="block">
+                          <Typography 
+                            variant="caption" 
+                            color="text.secondary" 
+                            display="block"
+                            sx={{
+                              fontFamily: '"Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                              fontSize: '0.75rem'
+                            }}
+                          >
                             Day High
                           </Typography>
                           <Typography 
                             variant="body2" 
                             sx={{ 
                               color: 'success.main',
-                              fontWeight: 500
+                              fontWeight: 500,
+                              fontFamily: '"Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                              fontSize: '0.85rem'
                             }}
                           >
                             ${stock.info.day_high}
                           </Typography>
                         </Grid>
                         <Grid item xs={4}>
-                          <Typography variant="caption" color="text.secondary" display="block">
+                          <Typography 
+                            variant="caption" 
+                            color="text.secondary" 
+                            display="block"
+                            sx={{
+                              fontFamily: '"Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                              fontSize: '0.75rem'
+                            }}
+                          >
                             Day Low
                           </Typography>
                           <Typography 
                             variant="body2" 
                             sx={{ 
                               color: 'error.main',
-                              fontWeight: 500
+                              fontWeight: 500,
+                              fontFamily: '"Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                              fontSize: '0.85rem'
                             }}
                           >
                             ${stock.info.day_low}
                           </Typography>
                         </Grid>
                         <Grid item xs={4}>
-                          <Typography variant="caption" color="text.secondary" display="block">
+                          <Typography 
+                            variant="caption" 
+                            color="text.secondary" 
+                            display="block"
+                            sx={{
+                              fontFamily: '"Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                              fontSize: '0.75rem'
+                            }}
+                          >
                             Change
                           </Typography>
                           <Typography 
@@ -296,7 +326,9 @@ const StockSearch = ({ onSelect }) => {
                               fontWeight: 500,
                               display: 'flex',
                               alignItems: 'center',
-                              gap: 0.5
+                              gap: 0.5,
+                              fontFamily: '"Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                              fontSize: '0.85rem'
                             }}
                           >
                             {stock.info.change_percent >= 0 ? '+' : ''}{stock.info.change_percent}%
@@ -309,7 +341,8 @@ const StockSearch = ({ onSelect }) => {
                         color="text.secondary"
                         sx={{
                           display: 'block',
-                          fontSize: '0.75rem'
+                          fontSize: '0.75rem',
+                          fontFamily: '"Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
                         }}
                       >
                         {stock.info.sector} • {stock.info.industry}
@@ -328,10 +361,11 @@ const StockSearch = ({ onSelect }) => {
             sx={{
               mt: 1,
               borderRadius: 2,
-              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+              boxShadow: '0 4px 16px rgba(0, 0, 0, 0.08)',
               '& .MuiAlert-message': {
                 fontSize: '0.9rem',
-                fontWeight: 500
+                fontWeight: 500,
+                fontFamily: '"Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
               }
             }}
             action={
