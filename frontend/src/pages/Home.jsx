@@ -687,9 +687,7 @@ const Home = () => {
                   p: 0,
                   textAlign: 'left',
                   '& .MuiAlert-icon': {
-                    alignItems: 'center',
-                    color: '#0288d1',
-                    mr: 0.5
+                    display: 'none'
                   }
                 }}
               >
