@@ -29,6 +29,14 @@ const StockChart = ({ data, stockName }) => {
   const options = {
     responsive: true,
     maintainAspectRatio: false,
+    animation: false, // Disable animations
+    transitions: {
+      active: {
+        animation: {
+          duration: 0 // Disable transitions
+        }
+      }
+    },
     plugins: {
       legend: {
         position: 'top',
@@ -51,6 +59,41 @@ const StockChart = ({ data, stockName }) => {
           bottom: window.innerWidth < 600 ? 10 : 20
         }
       },
+      tooltip: {
+        enabled: true,
+        backgroundColor: 'rgba(26, 54, 93, 0.9)',
+        titleFont: {
+          size: 13,
+          weight: 'bold',
+          family: '"Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+        },
+        bodyFont: {
+          size: 12,
+          family: '"Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+        },
+        padding: 10,
+        cornerRadius: 6,
+        displayColors: false,
+        callbacks: {
+          title: (tooltipItems) => {
+            const date = new Date(data[tooltipItems[0].dataIndex].date);
+            return date.toLocaleDateString(undefined, { 
+              weekday: 'short', 
+              year: 'numeric', 
+              month: 'short', 
+              day: 'numeric' 
+            });
+          },
+          label: (context) => {
+            const price = context.raw;
+            return `Price: $${price.toFixed(2)}`;
+          }
+        }
+      }
+    },
+    hover: {
+      mode: 'nearest',
+      intersect: false // Show tooltip on hover even if not directly over the point
     },
     scales: {
       y: {
@@ -70,7 +113,7 @@ const StockChart = ({ data, stockName }) => {
           },
           padding: 8,
           callback: function(value) {
-            return value.toFixed(0);
+            return `$${value.toFixed(2)}`;
           }
         }
       },
@@ -119,14 +162,15 @@ const StockChart = ({ data, stockName }) => {
     },
     elements: {
       point: {
-        radius: 2,
-        hoverRadius: 4,
-        borderWidth: 1.5,
-        pointStyle: 'circle'
+        radius: 3,
+        hoverRadius: 6,
+        borderWidth: 2,
+        pointStyle: 'circle',
+        hitRadius: 6, // Increase hit area for better hover detection
       },
       line: {
         tension: 0.2,
-        borderWidth: 1.5,
+        borderWidth: 2,
         borderColor: '#1976d2'
       }
     }
@@ -156,8 +200,9 @@ const StockChart = ({ data, stockName }) => {
         backgroundColor: '#1976d2',
         pointBackgroundColor: '#1976d2',
         pointBorderColor: '#1976d2',
+        pointBorderWidth: 2,
         fill: false,
-        borderWidth: 1.5,
+        borderWidth: 2,
       },
     ],
   };

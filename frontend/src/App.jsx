@@ -1,6 +1,7 @@
 import React from 'react';
 import { ThemeProvider, createTheme, CssBaseline, Box, Typography } from '@mui/material';
 import Home from './pages/Home';
+import { NavigationProvider } from './context/NavigationContext';
 
 const theme = createTheme({
   palette: {
@@ -77,15 +78,47 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <div className="app" style={{ 
-        display: 'flex', 
-        flexDirection: 'column', 
-        minHeight: '100vh' 
-      }}>
-        <Home />
-      </div>
+      <NavigationProvider>
+        <div className="app" style={{ 
+          display: 'flex', 
+          flexDirection: 'column', 
+          minHeight: '100vh' 
+        }}>
+          <Home />
+        </div>
+      </NavigationProvider>
     </ThemeProvider>
   );
 }
+
+// Add a global style rule to hide the blue box at the top
+const fixHeaderStyle = document.createElement('style');
+fixHeaderStyle.innerHTML = `
+  /* Hide blue box at the top of the screen */
+  body::before {
+    display: none !important;
+  }
+  
+  /* Additional selectors to target common header elements */
+  header, 
+  .header,
+  .app-bar,
+  [class*='AppBar'],
+  div[style*='position: fixed']:first-child,
+  div[style*='position: absolute']:first-child,
+  div[style*='background-color: #1976D2'],
+  div[style*='background-color: #2196F3'],
+  div[style*='background: linear-gradient(45deg, #2196F3'],
+  .MuiAppBar-root {
+    display: none !important;
+  }
+  
+  /* Ensure the search container is at the top */
+  .search-container {
+    position: relative !important;
+    z-index: 1500 !important;
+  }
+`;
+document.head.appendChild(fixHeaderStyle);
 
 export default App;

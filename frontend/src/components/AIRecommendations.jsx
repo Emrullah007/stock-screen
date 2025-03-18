@@ -19,6 +19,7 @@ import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import ReactMarkdown from 'react-markdown';
 import { getAIRecommendations } from '../services/api';
 import LoadingModal from './LoadingModal';
+import { formatTimestamp } from '../utils/dateUtils';
 
 const AIRecommendations = ({ symbol, sentimentData, onGenerateSentiment }) => {
   const [riskLevel, setRiskLevel] = useState('moderate');
@@ -27,6 +28,7 @@ const AIRecommendations = ({ symbol, sentimentData, onGenerateSentiment }) => {
   const [error, setError] = useState(null);
   const [recommendation, setRecommendation] = useState(null);
   const recommendationRef = useRef(null);
+  const recommendationHeadingRef = useRef(null);
 
   const handleGetRecommendations = async () => {
     if (!symbol) {
@@ -45,12 +47,15 @@ const AIRecommendations = ({ symbol, sentimentData, onGenerateSentiment }) => {
     try {
       const data = await getAIRecommendations(symbol, riskLevel, investmentHorizon, sentimentData);
       setRecommendation(data);
-      // Scroll to recommendation
+      
+      // Scroll to the bottom of the recommendation box
       setTimeout(() => {
         if (recommendationRef.current) {
-          recommendationRef.current.scrollIntoView({ 
-            behavior: 'smooth',
-            block: 'start'
+          const recommendationBox = recommendationRef.current;
+          const boxBottom = recommendationBox.getBoundingClientRect().top + window.pageYOffset - 20; // 20px offset
+          window.scrollTo({
+            top: boxBottom,
+            behavior: 'smooth'
           });
         }
       }, 100);
@@ -578,6 +583,17 @@ const AIRecommendations = ({ symbol, sentimentData, onGenerateSentiment }) => {
                 }
               }}
             >
+              {/* Heading anchor for scrolling to Investment Analysis section */}
+              <Box 
+                ref={recommendationHeadingRef} 
+                sx={{ 
+                  position: 'relative', 
+                  top: '-12px', // Small offset to position slightly above the heading
+                  visibility: 'hidden',
+                  height: 0
+                }}
+              />
+              
               <ReactMarkdown components={{
                 p: ({ node, children }) => (
                   <Typography 
@@ -594,16 +610,21 @@ const AIRecommendations = ({ symbol, sentimentData, onGenerateSentiment }) => {
                   </Typography>
                 ),
                 h3: ({ node, children }) => (
-                  <Typography variant="h6" sx={{ 
-                    mt: 2, 
-                    mb: 1,
-                    fontSize: '1rem',
-                    fontWeight: 600,
-                    color: 'primary.main',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 1
-                  }}>
+                  <Typography 
+                    variant="h6" 
+                    id={children.toString().toLowerCase().replace(/\s+/g, '-')}
+                    sx={{ 
+                      mt: 2, 
+                      mb: 1,
+                      fontSize: '1rem',
+                      fontWeight: 600,
+                      color: 'primary.main',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 1,
+                      scrollMarginTop: '20px' // Add some margin for better scrolling
+                    }}
+                  >
                     {children}
                   </Typography>
                 )
@@ -658,7 +679,7 @@ const AIRecommendations = ({ symbol, sentimentData, onGenerateSentiment }) => {
                   mt: 1,
                   textAlign: 'right'
                 }}>
-                  Last Updated: {new Date(recommendation.analysis_timestamp).toLocaleString()}
+                  Last Updated: {formatTimestamp(recommendation.analysis_timestamp)}
                 </Typography>
               </Box>
             </Paper>

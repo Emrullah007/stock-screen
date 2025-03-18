@@ -3,7 +3,7 @@ import logging
 import json
 import os
 import requests
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import yfinance as yf
 from openai import AzureOpenAI
 from dotenv import load_dotenv
@@ -414,7 +414,7 @@ Please provide a comprehensive analysis considering:
                 "market_metrics": market_metrics,
                 "articles": articles,
                 "sentiment_analysis": sentiment_analysis,
-                "analysis_timestamp": datetime.now().isoformat()
+                "analysis_timestamp": datetime.now(tz=timezone.utc).isoformat()
             }),
             mimetype="application/json"
         ))
@@ -554,7 +554,7 @@ Based on the above comprehensive analysis, provide a detailed investment recomme
                 "symbol": symbol,
                 "recommendation": recommendation,
                 "current_price": info.get('currentPrice'),
-                "analysis_timestamp": datetime.now().isoformat()
+                "analysis_timestamp": datetime.now(tz=timezone.utc).isoformat()
             }),
             mimetype="application/json"
         ))

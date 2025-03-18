@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Card,
   CardContent,
@@ -16,15 +16,22 @@ import {
   Grid,
   Chip,
   Tooltip,
+  Button,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import TrendingDownIcon from '@mui/icons-material/TrendingDown';
+import TrendingFlatIcon from '@mui/icons-material/TrendingFlat';
 import ShowChartIcon from '@mui/icons-material/ShowChart';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import PeopleIcon from '@mui/icons-material/People';
+import AssessmentIcon from '@mui/icons-material/Assessment';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import NewspaperIcon from '@mui/icons-material/Newspaper';
+import EqualizerIcon from '@mui/icons-material/Equalizer';
 import ReactMarkdown from 'react-markdown';
+import { formatTimestamp } from '../utils/dateUtils';
 
 // Market metrics explanations
 const metricExplanations = {
@@ -483,7 +490,7 @@ const SentimentAnalysis = ({ data, onClose }) => {
 
         <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
           <Typography variant="caption" color="text.secondary">
-            Last Updated: {new Date(data.analysis_timestamp).toLocaleString()}
+            Last Updated: {formatTimestamp(data.analysis_timestamp)}
           </Typography>
         </Box>
       </CardContent>
